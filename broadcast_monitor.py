@@ -578,8 +578,32 @@ def list_interfaces():
             print(f"\n  {Colors.DIM}✦ Interface ที่มี IP address คือตัวที่ Active อยู่{Colors.RESET}")
             print(f"  {Colors.DIM}✦ ใช้ชื่อ interface กับ -i เช่น: sudo python3 broadcast_monitor.py -i en0{Colors.RESET}\n")
 
-        else:
-            print(f"  {Colors.DIM}(Windows: ใช้ชื่อ interface เช่น 'Ethernet' หรือ 'Wi-Fi'){Colors.RESET}")
+        elif system == "windows":
+            print(f"\n{Colors.BOLD}  {'No.':<5} {'Interface':<25} {'Status':<30} {'IP Address':<18} {'MAC Address'}{Colors.RESET}")
+            print(f"  {'─'*95}")
+            ps_cmd = "Get-NetAdapter | Where-Object Status -eq 'Up' | Select-Object Name, InterfaceDescription, MacAddress | ConvertTo-Json"
+            cmd = ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", ps_cmd]
+            out = subprocess.run(cmd, capture_output=True, text=True, timeout=5).stdout
+            if out and "Error" not in out:
+                try:
+                    data = json.loads(out)
+                    items = data if isinstance(data, list) else [data]
+                    for idx, item in enumerate(items, 1):
+                        name = item.get("Name", f"Interface {idx}")
+                        desc = item.get("InterfaceDescription", "Active")[:28]
+                        mac = item.get("MacAddress", "-")
+                        ip_ps = f"(Get-NetIPAddress -InterfaceAlias '{name}' -AddressFamily IPv4 -ErrorAction SilentlyContinue).IPAddress"
+                        ip_out = subprocess.run(["powershell", "-NoProfile", "-Command", ip_ps], capture_output=True, text=True, timeout=3).stdout.strip()
+                        ip_val = ip_out.splitlines()[0] if ip_out else "-"
+                        print(f"  {Colors.DIM}{idx:>3}.{Colors.RESET} "
+                              f"{Colors.GREEN}{name:<25}{Colors.RESET} "
+                              f"{Colors.CYAN}{desc:<30}{Colors.RESET} "
+                              f"{Colors.GREEN}{ip_val:<18}{Colors.RESET} "
+                              f"{Colors.YELLOW}{mac}{Colors.RESET}")
+                except Exception:
+                    pass
+            print(f"\n  {Colors.DIM}✦ ใช้ชื่อ interface เช่น 'Ethernet' หรือ 'Wi-Fi' กับ -i เช่น: python broadcast_monitor.py -i Wi-Fi{Colors.RESET}\n")
+
     except Exception as e:
         print(f"  {Colors.RED}Error: {e}{Colors.RESET}")
 
@@ -620,8 +644,8 @@ Examples:
     # Auto-detect interface
     interface = args.interface or get_default_interface()
 
-    # ตรวจสอบว่าเป็น root/sudo
-    if os.name != 'nt' and os.geteuid() != 0:
+    # ตรวจสอบว่าเป็น root/sudo (บน macOS/Linux) หรือ Admin (บน Windows)
+    if os.name != 'nt' and hasattr(os, 'geteuid') and os.geteuid() != 0:
         print(f"\n{Colors.RED}  ❌ ต้องรันด้วย sudo:{Colors.RESET}")
         print(f"  {Colors.BOLD}sudo python3 broadcast_monitor.py{Colors.RESET}\n")
         sys.exit(1)

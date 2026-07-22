@@ -55,7 +55,7 @@ def print_banner():
 
 
 def ping_host(ip, timeout=1):
-    """Ping เช็คว่าออนไลน์"""
+    """Ping เช็คว่าออนไลน์ไหม (พร้อม fallback ตรวจสอบ TCP port และ ARP)"""
     system = platform.system().lower()
     if system == "windows":
         cmd = ["ping", "-n", "1", "-w", str(timeout * 1000), ip]
@@ -65,15 +65,35 @@ def ping_host(ip, timeout=1):
         cmd = ["ping", "-c", "1", "-W", str(timeout), ip]
     try:
         result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout + 2)
-        return result.returncode == 0
+        if result.returncode == 0:
+            return True
     except Exception:
-        return False
+        pass
+
+    # Fallback 1: TCP Port Probe สำหรับอุปกรณ์ที่บล็อก ICMP Ping
+    for p in (80, 443, 554, 8000, 37777, 8080, 445, 22, 139):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(0.2)
+                if s.connect_ex((ip, p)) == 0:
+                    return True
+        except Exception:
+            pass
+
+    # Fallback 2: ตรวจสอบ ARP Table
+    mac = get_mac(ip)
+    if mac != "N/A" and mac != "00:00:00:00:00:00":
+        return True
+
+    return False
 
 
 def get_mac(ip):
-    """ดึง MAC จาก ARP"""
+    """ดึง MAC จาก ARP (รองรับทั้ง Windows, macOS, Linux)"""
+    sys_platform = platform.system().lower()
+    cmd = ["arp", "-a", ip] if sys_platform == "windows" else ["arp", "-n", ip]
     try:
-        result = subprocess.run(["arp", "-n", ip], capture_output=True, text=True, timeout=3)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=3)
         match = re.search(r"([0-9a-fA-F]{1,2}[:-]){5}[0-9a-fA-F]{1,2}", result.stdout)
         if match:
             parts = re.split(r'[:-]', match.group(0).upper())
@@ -91,8 +111,55 @@ def get_hostname(ip):
         return "N/A"
 
 
+def detect_windows_version(ip):
+    """ระบุ Windows Version รายละเอียดผ่าน HTTP IIS Header หรือ SMB Probe"""
+    for port in (80, 443, 8080):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(0.2)
+                s.connect((ip, port))
+                s.sendall(f"HEAD / HTTP/1.1\r\nHost: {ip}\r\nConnection: close\r\n\r\n".encode())
+                data = s.recv(1024).decode('utf-8', errors='ignore')
+                iis_match = re.search(r'Server:\s*Microsoft-IIS/([\d\.]+)', data, re.IGNORECASE)
+                if iis_match:
+                    ver = iis_match.group(1)
+                    if ver == "10.0":
+                        return "Windows 10/11/Server 2016+"
+                    elif ver == "8.5":
+                        return "Windows 8.1 / Server 2012 R2"
+                    elif ver == "8.0":
+                        return "Windows 8 / Server 2012"
+                    elif ver == "7.5":
+                        return "Windows 7 / Server 2008 R2"
+                    return f"Windows (IIS/{ver})"
+        except Exception:
+            pass
+
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(0.3)
+            if s.connect_ex((ip, 445)) == 0:
+                neg_req = b"\x00\x00\x00\x2f\xff\x53\x4d\x42\x72\x00\x00\x00\x00\x18\x53\xc8\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xfe\x00\x00\x00\x00\x00\x0c\x00\x02\x4e\x54\x20\x4c\x4d\x20\x30\x2e\x31\x32\x00"
+                s.sendall(neg_req)
+                resp = s.recv(1024)
+                resp_str = resp.decode('latin1', errors='ignore')
+                if "Windows 10" in resp_str or "Windows 11" in resp_str:
+                    return "Windows 10/11"
+                elif "Windows Server 2022" in resp_str or "Windows Server 2019" in resp_str:
+                    return "Windows Server 2019/2022"
+                elif "Windows Server 2016" in resp_str:
+                    return "Windows Server 2016"
+                elif "Windows 7" in resp_str or "Server 2008 R2" in resp_str:
+                    return "Windows 7 / Server 2008 R2"
+                return "Windows (SMB)"
+    except Exception:
+        pass
+
+    return "Windows"
+
+
 def detect_os_ttl(ip):
-    """ระบุ OS จาก TTL"""
+    """ระบุ OS จาก TTL พร้อมรายละเอียด Windows Version"""
     system = platform.system().lower()
     try:
         if system == "windows":
@@ -109,7 +176,7 @@ def detect_os_ttl(ip):
             if ttl <= 64:
                 return "Linux/Unix"
             elif ttl <= 128:
-                return "Windows"
+                return detect_windows_version(ip)
             elif ttl <= 255:
                 return "Network Device"
     except Exception:

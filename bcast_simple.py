@@ -90,16 +90,62 @@ PORT_SERVICES = {
 # ── OUI Vendor Database (Prefix 3 octets → Vendor) ─────────────────
 OUI_DB = {
     # ─── IP Camera / NVR ───────────────────────────────────────────
-    "00:0C:E5": "Hikvision", "28:57:BE": "Hikvision", "34:EA:34": "Hikvision",
-    "44:19:B6": "Hikvision", "4C:BD:8F": "Hikvision", "50:9F:27": "Hikvision",
-    "54:C4:15": "Hikvision", "7C:1E:B3": "Hikvision", "80:18:44": "Hikvision",
-    "8C:E7:48": "Hikvision", "A0:7B:A6": "Hikvision", "BC:AD:28": "HiLook",
-    "C4:2F:90": "Hikvision", "C8:A7:02": "Hikvision", "D0:67:26": "Hikvision",
+    # ─── Hikvision / EZVIZ / HiLook (133 OUI blocks) ───────────────
+    "00:0C:E5": "Hikvision", "00:BC:99": "Hikvision", "04:03:12": "Hikvision",
+    "04:EE:CD": "Hikvision", "08:3B:C1": "Hikvision", "08:54:11": "Hikvision",
+    "08:A1:89": "Hikvision", "08:CC:81": "Hikvision", "0C:75:D2": "Hikvision",
+    "0C:A6:4C": "Hikvision", "10:12:FB": "Hikvision", "18:68:CB": "Hikvision",
+    "18:80:25": "Hikvision", "20:BB:BC": "Hikvision", "24:0F:9B": "Hikvision",
+    "24:28:FD": "Hikvision", "24:32:AE": "Hikvision", "24:48:45": "Hikvision",
+    "24:B1:05": "Hikvision", "28:57:BE": "Hikvision", "2C:A5:9C": "Hikvision",
+    "34:09:62": "Hikvision", "34:C6:DD": "Hikvision", "3C:1B:F8": "Hikvision",
+    "40:AC:BF": "Hikvision", "40:B5:70": "Hikvision", "44:19:B6": "Hikvision",
+    "44:47:CC": "Hikvision", "44:A6:42": "Hikvision", "48:78:5B": "Hikvision",
+    "4C:1F:86": "Hikvision", "4C:62:DF": "Hikvision", "4C:BD:8F": "Hikvision",
+    "4C:F5:DC": "Hikvision", "50:E5:38": "Hikvision", "54:8C:81": "Hikvision",
+    "54:C4:15": "Hikvision", "54:D6:0D": "Hikvision", "58:03:FB": "Hikvision",
+    "58:50:ED": "Hikvision", "58:8F:CF": "Hikvision", "5C:34:5B": "Hikvision",
+    "5C:DD:70": "Hikvision", "60:08:91": "Hikvision", "64:24:4D": "Hikvision",
+    "64:7E:B0": "Hikvision", "64:DB:8B": "Hikvision", "64:F2:FB": "Hikvision",
+    "68:6D:BC": "Hikvision", "6C:EF:C6": "Hikvision", "70:2E:80": "Hikvision",
+    "74:3F:C2": "Hikvision", "74:DA:88": "Hikvision", "78:07:54": "Hikvision",
+    "78:A6:A0": "Hikvision", "78:C1:AE": "Hikvision", "7C:09:12": "Hikvision",
+    "7C:F3:4A": "Hikvision", "80:48:9F": "Hikvision", "80:7C:62": "Hikvision",
+    "80:A2:35": "Hikvision", "80:BE:AF": "Hikvision", "80:F5:AE": "Hikvision",
+    "84:94:59": "Hikvision", "84:9A:40": "Hikvision", "84:E0:F4": "Hikvision",
+    "88:40:33": "Hikvision", "88:DE:39": "Hikvision", "8C:22:D2": "Hikvision",
+    "8C:E7:48": "Hikvision", "90:02:A9": "Hikvision", "94:E1:AC": "Hikvision",
+    "94:EC:13": "Hikvision", "98:0D:67": "Hikvision", "98:8B:0A": "Hikvision",
+    "98:9D:E5": "Hikvision", "98:DF:82": "Hikvision", "98:F1:12": "Hikvision",
+    "98:F6:21": "Hikvision", "A0:CC:2B": "Hikvision", "A0:FF:0C": "Hikvision",
+    "A4:14:37": "Hikvision", "A4:29:02": "Hikvision", "A4:4B:D9": "Hikvision",
+    "A4:A4:59": "Hikvision", "A4:D5:C2": "Hikvision", "AC:1C:26": "Hikvision",
+    "AC:1D:DF": "Hikvision", "AC:B9:2F": "Hikvision", "AC:CB:51": "Hikvision",
+    "B0:3A:F2": "Hikvision", "B4:A3:82": "Hikvision", "BC:29:78": "Hikvision",
+    "BC:5E:33": "Hikvision", "BC:9B:5E": "Hikvision", "BC:AD:28": "Hikvision",
+    "BC:BA:C2": "Hikvision", "C0:2C:5C": "Hikvision", "C0:51:7E": "Hikvision",
+    "C0:56:E3": "Hikvision", "C0:6D:ED": "Hikvision", "C4:2F:90": "Hikvision",
+    "C4:A3:6E": "Hikvision", "C8:A7:02": "Hikvision", "CC:13:F3": "Hikvision",
+    "CC:D3:9D": "Hikvision", "D0:67:26": "Hikvision", "D4:6D:6D": "Hikvision",
+    "D4:E8:53": "Hikvision", "D8:E0:E1": "Hikvision", "DC:07:F8": "Hikvision",
+    "DC:D2:6A": "Hikvision", "DC:E5:33": "Hikvision", "E0:2B:96": "Hikvision",
+    "E0:50:8B": "Hikvision", "E0:BA:AD": "Hikvision", "E0:CA:3C": "Hikvision",
+    "E0:DF:13": "Hikvision", "E4:3E:D7": "Hikvision", "E4:D5:8B": "Hikvision",
+    "E8:A0:ED": "Hikvision", "EC:3E:F7": "Hikvision", "EC:72:40": "Hikvision",
+    "EC:97:E0": "Hikvision", "EC:A9:71": "Hikvision", "EC:C8:9C": "Hikvision",
+    "F4:66:0E": "Hikvision", "F4:70:18": "Hikvision", "F8:36:9B": "Hikvision",
+    "F8:4D:FC": "Hikvision", "FC:24:22": "Hikvision", "FC:8B:97": "Hikvision",
+    "FC:9F:FD": "Hikvision",
+    # ─── Fortinet ───────────────────────────────────────────────────
+    "04:01:A1": "Fortinet", "70:4C:A5": "Fortinet", "00:09:0F": "Fortinet",
+    # ─── Dahua ──────────────────────────────────────────────────────
     "3C:EF:8C": "Dahua", "4C:11:BF": "Dahua", "90:02:A9": "Dahua",
     "A0:BD:1D": "Dahua", "B0:A7:B9": "Dahua", "BC:32:5F": "Dahua",
     "E4:24:6C": "Dahua", "F8:4D:FC": "Dahua", "FC:5A:1D": "Dahua",
     "00:40:8C": "Axis Comm", "AC:CC:8E": "Axis Comm", "B8:A4:4F": "Axis Comm",
     "54:F0:06": "Uniview", "70:2D:84": "Uniview",
+    "20:88:10": "Dell",
+    "68:DA:73:AB": "Haiyingzhilian", "68:DA:73:A": "Haiyingzhilian", "68:DA:73": "Haiyingzhilian",
     # ─── Cisco / Network Gear ──────────────────────────────────────
     "00:00:0C": "Cisco", "00:1A:A1": "Cisco", "00:1B:54": "Cisco",
     "00:1C:57": "Cisco", "00:1D:70": "Cisco", "00:21:A0": "Cisco",
@@ -177,17 +223,14 @@ def get_mac_arp(ip):
 
 
 def lookup_vendor(mac):
-    """ค้นหา Vendor จาก OUI 3 octets แรก"""
+    """ค้นหา Vendor จาก OUI (รองรับ 4, 3.5, 3 และ 2 octets)"""
     if not mac or mac == "N/A":
         return "Unknown"
-    prefix = mac[:8].upper()
-    vendor = OUI_DB.get(prefix)
-    if vendor:
-        return vendor
-    prefix2 = mac[:5].upper()
-    for k, v in OUI_DB.items():
-        if k.startswith(prefix2):
-            return v
+    mac_upper = mac.upper()
+    for length in (11, 10, 8, 5):
+        prefix = mac_upper[:length]
+        if prefix in OUI_DB:
+            return OUI_DB[prefix]
     return "Unknown"
 
 
@@ -229,10 +272,40 @@ def detect_iface():
 
 
 def get_all_interfaces():
-    """ดึง interface ทั้งหมดพร้อม IP และ MAC จาก tcpdump + ifconfig"""
+    """ดึง interface ทั้งหมดพร้อม IP และ MAC (รองรับ Windows 11, macOS, Linux)"""
     sys_name = platform.system().lower()
     ifaces = []
     ip_mac = {}
+
+    if sys_name == "windows":
+        try:
+            cmd = ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command",
+                   "Get-NetAdapter | Where-Object Status -eq 'Up' | Select-Object Name, InterfaceDescription, MacAddress | ConvertTo-Json"]
+            out = subprocess.run(cmd, capture_output=True, text=True, timeout=5).stdout
+            if out and "Error" not in out:
+                data = json.loads(out)
+                items = data if isinstance(data, list) else [data]
+                for idx, item in enumerate(items, 1):
+                    name = item.get("Name", f"Interface {idx}")
+                    mac = item.get("MacAddress", "-")
+                    if mac and mac != "-":
+                        mac = mac.replace("-", ":").upper()
+
+                    ip_ps = f"(Get-NetIPAddress -InterfaceAlias '{name}' -AddressFamily IPv4 -ErrorAction SilentlyContinue).IPAddress"
+                    ip_out = subprocess.run(["powershell", "-NoProfile", "-Command", ip_ps], capture_output=True, text=True, timeout=3).stdout.strip()
+                    ip_val = ip_out.splitlines()[0] if ip_out else "-"
+
+                    ifaces.append({
+                        "num": str(idx),
+                        "name": name,
+                        "flags": item.get("InterfaceDescription", "Active"),
+                        "ip": ip_val,
+                        "mac": mac
+                    })
+                if ifaces:
+                    return ifaces
+        except Exception:
+            pass
 
     try:
         if sys_name in ["darwin", "linux"]:

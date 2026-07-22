@@ -1501,6 +1501,10 @@ OUI_DATABASE = {
     "18:FB:7B": "Dell",
     "1C:40:24": "Dell",
     "20:47:47": "Dell",
+    "20:88:10": "Dell",
+    "68:DA:73:AB": "Haiyingzhilian",
+    "68:DA:73:A": "Haiyingzhilian",
+    "68:DA:73": "Haiyingzhilian",
     "24:6E:96": "Dell",
     "24:B6:FD": "Dell",
     "28:C8:25": "Dell",
@@ -1516,6 +1520,7 @@ OUI_DATABASE = {
     "5C:26:0A": "Dell",
     "5C:F9:DD": "Dell",
     "64:00:6A": "Dell",
+    "70:B5:E8": "Dell",
     "74:86:7A": "Dell",
     "74:E6:E2": "Dell",
     "78:2B:CB": "Dell",
@@ -1545,6 +1550,7 @@ OUI_DATABASE = {
     "D4:BE:D9": "Dell",
     "D8:9E:F3": "Dell",
     "E4:43:4B": "Dell",
+    "E8:CF:83": "Dell",
     "EC:F4:BB": "Dell",
     "F0:1F:AF": "Dell",
     "F4:8E:38": "Dell",
@@ -1718,7 +1724,8 @@ OUI_DATABASE = {
     "FC:15:B4": "Hewlett-Packard",
     "FC:3F:DB": "Hewlett-Packard",
     "FC:A8:41": "Hewlett-Packard",
-    # ─── Hikvision (83 OUI blocks) ──────────────────────────────────
+    # ─── Hikvision / EZVIZ / HiLook (133 OUI blocks) ───────────────
+    "00:0C:E5": "Hikvision",
     "00:BC:99": "Hikvision",
     "04:03:12": "Hikvision",
     "04:EE:CD": "Hikvision",
@@ -1727,16 +1734,20 @@ OUI_DATABASE = {
     "08:A1:89": "Hikvision",
     "08:CC:81": "Hikvision",
     "0C:75:D2": "Hikvision",
+    "0C:A6:4C": "Hikvision",
     "10:12:FB": "Hikvision",
     "18:68:CB": "Hikvision",
     "18:80:25": "Hikvision",
+    "20:BB:BC": "Hikvision",
     "24:0F:9B": "Hikvision",
     "24:28:FD": "Hikvision",
     "24:32:AE": "Hikvision",
     "24:48:45": "Hikvision",
+    "24:B1:05": "Hikvision",
     "28:57:BE": "Hikvision",
     "2C:A5:9C": "Hikvision",
     "34:09:62": "Hikvision",
+    "34:C6:DD": "Hikvision",
     "3C:1B:F8": "Hikvision",
     "40:AC:BF": "Hikvision",
     "40:B5:70": "Hikvision",
@@ -1751,50 +1762,106 @@ OUI_DATABASE = {
     "50:E5:38": "Hikvision",
     "54:8C:81": "Hikvision",
     "54:C4:15": "Hikvision",
+    "54:D6:0D": "Hikvision",
     "58:03:FB": "Hikvision",
     "58:50:ED": "Hikvision",
+    "58:8F:CF": "Hikvision",
+    "5C:34:5B": "Hikvision",
     "5C:DD:70": "Hikvision",
     "60:08:91": "Hikvision",
+    "64:24:4D": "Hikvision",
     "64:7E:B0": "Hikvision",
+    "64:DB:8B": "Hikvision",
+    "64:F2:FB": "Hikvision",
+    "68:6D:BC": "Hikvision",
     "6C:EF:C6": "Hikvision",
     "70:2E:80": "Hikvision",
+    "74:3F:C2": "Hikvision",
     "74:DA:88": "Hikvision",
     "78:07:54": "Hikvision",
+    "78:A6:A0": "Hikvision",
+    "78:C1:AE": "Hikvision",
     "7C:09:12": "Hikvision",
     "7C:F3:4A": "Hikvision",
+    "80:48:9F": "Hikvision",
+    "80:7C:62": "Hikvision",
     "80:A2:35": "Hikvision",
+    "80:BE:AF": "Hikvision",
+    "80:F5:AE": "Hikvision",
+    "84:94:59": "Hikvision",
+    "84:9A:40": "Hikvision",
     "84:E0:F4": "Hikvision",
     "88:40:33": "Hikvision",
+    "88:DE:39": "Hikvision",
+    "8C:22:D2": "Hikvision",
     "8C:E7:48": "Hikvision",
     "90:02:A9": "Hikvision",
     "94:E1:AC": "Hikvision",
+    "94:EC:13": "Hikvision",
     "98:0D:67": "Hikvision",
+    "98:8B:0A": "Hikvision",
+    "98:9D:E5": "Hikvision",
+    "98:DF:82": "Hikvision",
+    "98:F1:12": "Hikvision",
     "98:F6:21": "Hikvision",
     "A0:CC:2B": "Hikvision",
+    "A0:FF:0C": "Hikvision",
     "A4:14:37": "Hikvision",
+    "A4:29:02": "Hikvision",
+    "A4:4B:D9": "Hikvision",
+    "A4:A4:59": "Hikvision",
+    "A4:D5:C2": "Hikvision",
+    "AC:1C:26": "Hikvision",
     "AC:1D:DF": "Hikvision",
+    "AC:B9:2F": "Hikvision",
+    "AC:CB:51": "Hikvision",
     "B0:3A:F2": "Hikvision",
     "B4:A3:82": "Hikvision",
+    "BC:29:78": "Hikvision",
+    "BC:5E:33": "Hikvision",
+    "BC:9B:5E": "Hikvision",
     "BC:AD:28": "Hikvision",
+    "BC:BA:C2": "Hikvision",
     "C0:2C:5C": "Hikvision",
+    "C0:51:7E": "Hikvision",
     "C0:56:E3": "Hikvision",
+    "C0:6D:ED": "Hikvision",
     "C4:2F:90": "Hikvision",
     "C4:A3:6E": "Hikvision",
     "C8:A7:02": "Hikvision",
+    "CC:13:F3": "Hikvision",
     "CC:D3:9D": "Hikvision",
     "D0:67:26": "Hikvision",
     "D4:6D:6D": "Hikvision",
+    "D4:E8:53": "Hikvision",
     "D8:E0:E1": "Hikvision",
+    "DC:07:F8": "Hikvision",
+    "DC:D2:6A": "Hikvision",
     "DC:E5:33": "Hikvision",
     "E0:2B:96": "Hikvision",
     "E0:50:8B": "Hikvision",
+    "E0:BA:AD": "Hikvision",
+    "E0:CA:3C": "Hikvision",
+    "E0:DF:13": "Hikvision",
     "E4:3E:D7": "Hikvision",
     "E4:D5:8B": "Hikvision",
+    "E8:A0:ED": "Hikvision",
     "EC:3E:F7": "Hikvision",
     "EC:72:40": "Hikvision",
+    "EC:97:E0": "Hikvision",
+    "EC:A9:71": "Hikvision",
+    "EC:C8:9C": "Hikvision",
     "F4:66:0E": "Hikvision",
+    "F4:70:18": "Hikvision",
     "F8:36:9B": "Hikvision",
+    "F8:4D:FC": "Hikvision",
+    "FC:24:22": "Hikvision",
     "FC:8B:97": "Hikvision",
+    "FC:9F:FD": "Hikvision",
+    # ─── Fortinet ───────────────────────────────────────────────────
+    "04:01:A1": "Fortinet",
+    "70:4C:A5": "Fortinet",
+    "00:09:0F": "Fortinet",
     # ─── Dahua Technology ───────────────────────────────────────────
     "3C:EF:8C": "Dahua",
     "40:34:8E": "Dahua",
@@ -1939,18 +2006,29 @@ def get_hostname(ip_str):
 
 
 def lookup_vendor(mac_address):
-    """หา Vendor จาก OUI (3-byte prefix ของ MAC)"""
+    """หา Vendor จาก OUI (รองรับ 4 octets, 3.5 octets, 3 octets และ 2 octets)"""
     if mac_address == "N/A":
         return "Unknown"
 
     mac_upper = mac_address.upper()
-    # ลอง match 3 octets ก่อน (OUI)
-    prefix_3 = mac_upper[:8]  # e.g., "00:50:56"
+
+    # ลอง match 4 octets (11 ตัวอักษร e.g. "68:DA:73:AB")
+    prefix_4 = mac_upper[:11]
+    if prefix_4 in OUI_DATABASE:
+        return OUI_DATABASE[prefix_4]
+
+    # ลอง match 3.5 octets (10 ตัวอักษร e.g. "68:DA:73:A")
+    prefix_3_5 = mac_upper[:10]
+    if prefix_3_5 in OUI_DATABASE:
+        return OUI_DATABASE[prefix_3_5]
+
+    # ลอง match 3 octets (8 ตัวอักษร e.g. "00:50:56")
+    prefix_3 = mac_upper[:8]
     if prefix_3 in OUI_DATABASE:
         return OUI_DATABASE[prefix_3]
 
-    # ลอง match 2 octets (สำหรับ Docker และอื่น ๆ)
-    prefix_2 = mac_upper[:5]  # e.g., "02:42"
+    # ลอง match 2 octets (5 ตัวอักษร e.g. "02:42")
+    prefix_2 = mac_upper[:5]
     if prefix_2 in OUI_DATABASE:
         return OUI_DATABASE[prefix_2]
 
@@ -2046,8 +2124,63 @@ def detect_device_type(hostname, vendor, open_ports=None):
     return "❓ Unknown Device"
 
 
+def detect_windows_version(ip_str):
+    """ระบุ Windows Version รายละเอียดผ่าน HTTP IIS Header หรือ SMB/RPC Probe"""
+    # 1. Probe HTTP Server Header (Microsoft-IIS)
+    for port in (80, 443, 8080, 8000):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(0.2)
+                s.connect((ip_str, port))
+                s.sendall(f"HEAD / HTTP/1.1\r\nHost: {ip_str}\r\nConnection: close\r\n\r\n".encode())
+                data = s.recv(1024).decode('utf-8', errors='ignore')
+                iis_match = re.search(r'Server:\s*Microsoft-IIS/([\d\.]+)', data, re.IGNORECASE)
+                if iis_match:
+                    ver = iis_match.group(1)
+                    if ver == "10.0":
+                        return "Windows 10/11/Server 2016+"
+                    elif ver == "8.5":
+                        return "Windows 8.1 / Server 2012 R2"
+                    elif ver == "8.0":
+                        return "Windows 8 / Server 2012"
+                    elif ver == "7.5":
+                        return "Windows 7 / Server 2008 R2"
+                    elif ver == "7.0":
+                        return "Windows Vista / Server 2008"
+                    elif ver == "6.0":
+                        return "Windows Server 2003"
+                    return f"Windows (IIS/{ver})"
+        except Exception:
+            pass
+
+    # 2. Probe SMB / NetBIOS (Port 445 / 139)
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(0.3)
+            if s.connect_ex((ip_str, 445)) == 0:
+                neg_req = b"\x00\x00\x00\x2f\xff\x53\x4d\x42\x72\x00\x00\x00\x00\x18\x53\xc8\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xfe\x00\x00\x00\x00\x00\x0c\x00\x02\x4e\x54\x20\x4c\x4d\x20\x30\x2e\x31\x32\x00"
+                s.sendall(neg_req)
+                resp = s.recv(1024)
+                resp_str = resp.decode('latin1', errors='ignore')
+                if "Windows 10" in resp_str or "Windows 11" in resp_str:
+                    return "Windows 10/11"
+                elif "Windows Server 2022" in resp_str or "Windows Server 2019" in resp_str:
+                    return "Windows Server 2019/2022"
+                elif "Windows Server 2016" in resp_str:
+                    return "Windows Server 2016"
+                elif "Windows 7" in resp_str or "Server 2008 R2" in resp_str:
+                    return "Windows 7 / Server 2008 R2"
+                elif "Windows 8" in resp_str or "Server 2012" in resp_str:
+                    return "Windows 8 / Server 2012"
+                return "Windows (SMB)"
+    except Exception:
+        pass
+
+    return "Windows"
+
+
 def detect_os_ttl(ip_str, timeout=1):
-    """ตรวจสอบ OS จาก TTL ของ ping response"""
+    """ตรวจสอบ OS จาก TTL ของ ping response พร้อมระบุรายละเอียด Windows Version"""
     system = platform.system().lower()
     try:
         if system == "windows":
@@ -2066,7 +2199,7 @@ def detect_os_ttl(ip_str, timeout=1):
             if ttl <= 64:
                 return "Linux/Unix"
             elif ttl <= 128:
-                return "Windows"
+                return detect_windows_version(ip_str)
             elif ttl <= 255:
                 return "Network Device"
     except Exception:
@@ -2074,10 +2207,36 @@ def detect_os_ttl(ip_str, timeout=1):
     return "Unknown"
 
 
+def check_port_open(ip_str, ports=(80, 443, 554, 8000, 37777, 8080, 445, 22, 139), timeout=0.2):
+    """เช็คว่าเปิดพอร์ตที่ใช้บ่อยหรือไม่ (สำหรับเครื่อง/กล้องที่บล็อก ICMP Ping)"""
+    for port in ports:
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(timeout)
+                if s.connect_ex((ip_str, port)) == 0:
+                    return True
+        except Exception:
+            pass
+    return False
+
+
 def scan_host(ip_str):
-    """สแกน host เดียว - คืนค่าผลลัพธ์"""
-    if ping_host(ip_str):
-        mac = get_mac_address(ip_str)
+    """สแกน host เดียว - คืนค่าผลลัพธ์แบบ Multi-stage (Ping -> TCP Probe -> ARP Check)"""
+    online = ping_host(ip_str)
+
+    # หาก Ping ไม่ตอบสนอง ลองตรวจจับด้วย TCP Port Probe (สำหรับอุปกรณ์ที่ตั้ง Firewall บล็อก Ping)
+    if not online:
+        if check_port_open(ip_str):
+            online = True
+
+    # ดึง MAC Address จาก ARP Table
+    mac = get_mac_address(ip_str)
+
+    # หากมีข้อมูลใน ARP Table แปลว่าอุปกรณ์เชื่อมต่อบน LAN จริง
+    if not online and mac != "N/A" and mac != "00:00:00:00:00:00":
+        online = True
+
+    if online:
         hostname = get_hostname(ip_str)
         vendor = lookup_vendor(mac)
         device_type = detect_device_type(hostname, vendor)
@@ -2337,11 +2496,14 @@ def show_help():
 
 def main():
     """ฟังก์ชันหลัก"""
+    if platform.system().lower() == "windows":
+        os.system("")  # Enable ANSI escape sequences in Windows CMD/PowerShell
+
     clear_screen()
     print_banner()
 
     # ตรวจสอบ root
-    if os.geteuid() != 0 and platform.system().lower() != "windows":
+    if platform.system().lower() != "windows" and hasattr(os, 'geteuid') and os.geteuid() != 0:
         print(f"{Colors.YELLOW}  ⚠️  แนะนำให้รันด้วย sudo เพื่อดึง MAC Address ได้ถูกต้อง{Colors.RESET}")
         print(f"{Colors.DIM}     $ sudo python3 {sys.argv[0]}{Colors.RESET}\n")
 

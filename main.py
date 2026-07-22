@@ -105,13 +105,18 @@ def run_script(script_name, args_list=[]):
 
 
 def run_sudo_script(script_name, args_list=[]):
-    """รัน script ด้วย sudo (สำหรับ tools ที่ต้องการ root)"""
+    """รัน script ด้วย sudo บน Unix/Mac หรือรันตรงๆ บน Windows (พร้อมแนะนำ Administrator)"""
     script_path = os.path.join(SCRIPT_DIR, script_name)
-    cmd = ["sudo", sys.executable, script_path] + args_list
+    if platform.system().lower() == "windows":
+        cmd = [sys.executable, script_path] + args_list
+    else:
+        cmd = ["sudo", sys.executable, script_path] + args_list
     try:
         subprocess.run(cmd)
     except KeyboardInterrupt:
         pass
+    except FileNotFoundError as e:
+        print(f"  {Colors.RED}❌ Error running script: {e}{Colors.RESET}")
 
 
 def show_main_menu():
@@ -165,7 +170,7 @@ def quick_full_scan(ip):
 # ─── Subnet Full Scan (ทุกอุปกรณ์ใน Subnet) ─────────────────────
 
 def ping_host(ip, timeout=1):
-    """Ping เช็คว่าออนไลน์ไหม"""
+    """Ping เช็คว่าออนไลน์ไหม (พร้อม fallback ตรวจสอบ TCP port และ ARP)"""
     sys_platform = platform.system().lower()
     if sys_platform == "windows":
         cmd = ["ping", "-n", "1", "-w", str(timeout * 1000), ip]
@@ -175,9 +180,27 @@ def ping_host(ip, timeout=1):
         cmd = ["ping", "-c", "1", "-W", str(timeout), ip]
     try:
         result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout + 2)
-        return result.returncode == 0
+        if result.returncode == 0:
+            return True
     except Exception:
-        return False
+        pass
+
+    # Fallback 1: TCP Port Probe สำหรับเครื่องที่บล็อก ICMP Ping
+    for p in (80, 443, 554, 8000, 37777, 8080, 445, 22, 139):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(0.2)
+                if s.connect_ex((ip, p)) == 0:
+                    return True
+        except Exception:
+            pass
+
+    # Fallback 2: ตรวจสอบ ARP table บน LAN
+    mac = get_mac(ip)
+    if mac != "N/A" and mac != "00:00:00:00:00:00":
+        return True
+
+    return False
 
 
 def get_mac(ip):
@@ -350,7 +373,8 @@ Modes (-m):
                         choices=['net', 'port', 'vuln', 'net-dev', 'win', 'full'],
                         help='โหมดการสแกน (default: full)')
 
-    args = parser.parse_args()
+    if platform.system().lower() == "windows":
+        os.system("")  # Enable ANSI color codes on Windows CMD/PowerShell
 
     clear_screen()
     print_banner()

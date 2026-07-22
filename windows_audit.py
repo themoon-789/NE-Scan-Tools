@@ -42,6 +42,61 @@ def run_powershell(command):
         return f"Error: {str(e)}"
 
 
+def check_windows_version():
+    """ตรวจสอบ Windows Version และ Build Number"""
+    if platform.system().lower() != "windows":
+        os_info = f"{platform.system()} {platform.release()} (Architecture: {platform.machine()})"
+        return {
+            "status": "PASS",
+            "severity": "INFO",
+            "detail": f"ระบบปฏิบัติการปัจจุบัน: {os_info}",
+            "recommendation": "ไม่ต้องดำเนินการใดๆ"
+        }
+
+    ps_cmd = "(Get-CimInstance Win32_OperatingSystem) | Select-Object Caption, Version, BuildNumber, OSArchitecture | ConvertTo-Json"
+    output = run_powershell(ps_cmd)
+
+    if output and "Error" not in output:
+        try:
+            data = json.loads(output)
+            caption = data.get("Caption", "Windows").strip()
+            version = data.get("Version", "").strip()
+            build = data.get("BuildNumber", "").strip()
+            arch = data.get("OSArchitecture", "").strip()
+
+            disp_ver_cmd = "(Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion').DisplayVersion"
+            disp_ver = run_powershell(disp_ver_cmd)
+            disp_str = f" {disp_ver}" if disp_ver and "Error" not in disp_ver else ""
+
+            details = f"{caption}{disp_str} (Version: {version}, Build: {build}, Arch: {arch})"
+
+            is_end_of_life = any(legacy in caption for legacy in ["Windows 7", "Windows 8", "Windows XP", "Server 2008", "Server 2003"])
+            if is_end_of_life:
+                return {
+                    "status": "FAIL",
+                    "severity": "CRITICAL",
+                    "detail": f"{details} — Windows รุ่นนี้หมดการซัพพอร์ต (End of Life)",
+                    "recommendation": "อัพเกรดเป็น Windows 10/11 หรือ Windows Server 2019/2022 เพื่อรับ Security Patch"
+                }
+
+            return {
+                "status": "PASS",
+                "severity": "INFO",
+                "detail": details,
+                "recommendation": "ตรวจสอบและอัพเดท Windows Update เป็นประจำ"
+            }
+        except Exception:
+            pass
+
+    win_ver = platform.win32_ver()
+    return {
+        "status": "PASS",
+        "severity": "INFO",
+        "detail": f"Windows Version: {win_ver[0]} {win_ver[1]} ({win_ver[2]})",
+        "recommendation": "หมั่นอัพเดท Security Patches ให้เป็นปัจจุบัน"
+    }
+
+
 def check_smbv1():
     """ตรวจสอบการเปิดใช้งาน SMBv1 (โปรโตคอลเก่าที่มีช่องโหว่ร้ายแรง)"""
     ps_cmd = "(Get-SmbServerConfiguration).EnableSMB1Protocol"
@@ -190,11 +245,12 @@ def main():
     print(f"  🔍 กำลังเริ่มการตรวจสอบความปลอดภัยของระบบ...\n")
 
     checks = [
-        ("1. การตรวจสอบ SMBv1 Protocol", check_smbv1),
-        ("2. การตรวจสอบ Windows Firewall", check_firewall),
-        ("3. การตรวจสอบ UAC (User Account Control)", check_uac),
-        ("4. การตรวจสอบ RDP NLA Authentication", check_rdp_nla),
-        ("5. การตรวจสอบ Windows Defender Status", check_defender),
+        ("1. การตรวจสอบ Windows OS Version & Build", check_windows_version),
+        ("2. การตรวจสอบ SMBv1 Protocol", check_smbv1),
+        ("3. การตรวจสอบ Windows Firewall", check_firewall),
+        ("4. การตรวจสอบ UAC (User Account Control)", check_uac),
+        ("5. การตรวจสอบ RDP NLA Authentication", check_rdp_nla),
+        ("6. การตรวจสอบ Windows Defender Status", check_defender),
     ]
 
     results = []
