@@ -1,0 +1,41 @@
+# ─── Python cache ────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+
+# ─── OS generated ────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+
+# ─── Scan output / logs ──────────────────────────────────────────────
+*.json
+*.csv
+*.log
+*.txt
+reports/
+output/
+results/
+
+# ─── Sensitive / runtime files ───────────────────────────────────────
+monitor_baseline.json
+*.pcap
+*.cap
+
+# ─── Python virtual environment ─────────────────────────────────────
+venv/
+.venv/
+env/
+.env
+
+# ─── IDE / editor ────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
