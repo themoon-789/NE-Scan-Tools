@@ -24,17 +24,20 @@ import json
 from datetime import datetime
 
 # ─── สี Terminal ────────────────────────────────────────────────────
+
+
 class Colors:
-    HEADER    = '\033[95m'
-    BLUE      = '\033[94m'
-    CYAN      = '\033[96m'
-    GREEN     = '\033[92m'
-    YELLOW    = '\033[93m'
-    RED       = '\033[91m'
-    BOLD      = '\033[1m'
-    DIM       = '\033[2m'
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    DIM = '\033[2m'
     UNDERLINE = '\033[4m'
-    RESET     = '\033[0m'
+    RESET = '\033[0m'
+
 
 # ─── OUI Database (ตัวอย่าง Vendor ยอดนิยม) ────────────────────────
 OUI_DATABASE = {
@@ -48,7 +51,7 @@ OUI_DATABASE = {
     "00:16:3E": "Xen",
     "00:1A:4A": "Qumranet (KVM)",
     "AC:DE:48": "Private (Docker)",
-    "02:42":    "Docker Container",
+    "02:42": "Docker Container",
     "00:15:5D": "Microsoft Hyper-V",
     "00:03:FF": "Microsoft Hyper-V",
     "00:1D:D8": "Microsoft",
@@ -1972,7 +1975,8 @@ def detect_device_type(hostname, vendor, open_ports=None):
     router_keywords = ["gateway", "router", "gw", "mikrotik", "ubiquiti", "openwrt"]
     if any(kw in hostname_lower for kw in router_keywords):
         return "🌐 Router/Gateway"
-    if any(kw in vendor_lower for kw in ["cisco", "mikrotik", "juniper", "ubiquiti", "linksys", "netgear", "tp-link", "d-link", "asus router"]):
+    if any(kw in vendor_lower for kw in ["cisco", "mikrotik", "juniper",
+           "ubiquiti", "linksys", "netgear", "tp-link", "d-link", "asus router"]):
         return "🌐 Router/Switch"
 
     # Access Point
@@ -1994,7 +1998,8 @@ def detect_device_type(hostname, vendor, open_ports=None):
 
     # Virtual Machine
     vm_keywords = ["vm", "virtual"]
-    if any(kw in hostname_lower for kw in vm_keywords) or any(kw in vendor_lower for kw in ["vmware", "virtualbox", "qemu", "kvm", "xen", "hyper-v"]):
+    if any(kw in hostname_lower for kw in vm_keywords) or any(
+            kw in vendor_lower for kw in ["vmware", "virtualbox", "qemu", "kvm", "xen", "hyper-v"]):
         return "☁️  Virtual Machine"
 
     # Docker
@@ -2167,12 +2172,12 @@ def print_results_table(results):
 
     results.sort(key=lambda x: [int(p) for p in x['ip'].split('.')])
 
-    ip_w     = max(max(len(r['ip'])          for r in results), 15)
-    mac_w    = 17
-    host_w   = min(max(max(len(r['hostname']) for r in results), 10), 30)
-    vendor_w = min(max(max(len(r['vendor'])   for r in results), 8),  18)
-    os_w     = min(max(max(len(r.get('os','')) for r in results), 10), 14)
-    type_w   = min(max(max(len(r['device_type']) for r in results), 15), 28)
+    ip_w = max(max(len(r['ip']) for r in results), 15)
+    mac_w = 17
+    host_w = min(max(max(len(r['hostname']) for r in results), 10), 30)
+    vendor_w = min(max(max(len(r['vendor']) for r in results), 8), 18)
+    os_w = min(max(max(len(r.get('os', '')) for r in results), 10), 14)
+    type_w = min(max(max(len(r['device_type']) for r in results), 15), 28)
 
     total_w = ip_w + mac_w + host_w + vendor_w + os_w + type_w + 25
 
@@ -2186,14 +2191,17 @@ def print_results_table(results):
 
     for r in results:
         hostname_d = r['hostname'][:host_w]
-        vendor_d   = r['vendor'][:vendor_w]
-        type_d     = r['device_type'][:type_w]
-        os_d       = r.get('os', 'Unknown')[:os_w]
+        vendor_d = r['vendor'][:vendor_w]
+        type_d = r['device_type'][:type_w]
+        os_d = r.get('os', 'Unknown')[:os_w]
 
         os_color = Colors.BLUE
-        if 'Windows' in os_d:       os_color = Colors.CYAN
-        elif 'Linux' in os_d:       os_color = Colors.GREEN
-        elif 'Network' in os_d:     os_color = Colors.YELLOW
+        if 'Windows' in os_d:
+            os_color = Colors.CYAN
+        elif 'Linux' in os_d:
+            os_color = Colors.GREEN
+        elif 'Network' in os_d:
+            os_color = Colors.YELLOW
 
         print(f"  {Colors.GREEN}{r['ip']:<{ip_w}}{Colors.RESET}  "
               f"{Colors.YELLOW}{r['mac']:<{mac_w}}{Colors.RESET}  "

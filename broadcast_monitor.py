@@ -30,43 +30,48 @@ import collections
 from datetime import datetime
 
 # ─── สี Terminal ────────────────────────────────────────────────────
+
+
 class Colors:
-    CYAN    = '\033[96m'
-    GREEN   = '\033[92m'
-    YELLOW  = '\033[93m'
-    RED     = '\033[91m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
     MAGENTA = '\033[35m'
-    BLUE    = '\033[94m'
-    BOLD    = '\033[1m'
-    DIM     = '\033[2m'
-    RESET   = '\033[0m'
-    BG_RED  = '\033[41m'
-    BG_YEL  = '\033[43m'
-    WHITE   = '\033[97m'
+    BLUE = '\033[94m'
+    BOLD = '\033[1m'
+    DIM = '\033[2m'
+    RESET = '\033[0m'
+    BG_RED = '\033[41m'
+    BG_YEL = '\033[43m'
+    WHITE = '\033[97m'
+
 
 # ─── ค่า Default ─────────────────────────────────────────────────────
-DEFAULT_INTERFACE   = "en0"       # macOS default (ใช้ eth0 บน Linux)
-ALERT_THRESHOLD     = 50          # pps (packets per second) ต่อ source
-STORM_THRESHOLD     = 200         # pps ทั้งหมด — เข้าสู่สถานะ Storm
-UPDATE_INTERVAL     = 3.0         # วินาที — refresh dashboard
-CAPTURE_DURATION    = 0           # 0 = ไม่มีกำหนด (Ctrl+C เพื่อหยุด)
+DEFAULT_INTERFACE = "en0"       # macOS default (ใช้ eth0 บน Linux)
+ALERT_THRESHOLD = 50          # pps (packets per second) ต่อ source
+STORM_THRESHOLD = 200         # pps ทั้งหมด — เข้าสู่สถานะ Storm
+UPDATE_INTERVAL = 3.0         # วินาที — refresh dashboard
+CAPTURE_DURATION = 0           # 0 = ไม่มีกำหนด (Ctrl+C เพื่อหยุด)
 
 # ─── Protocol Patterns ───────────────────────────────────────────────
 PROTOCOL_PATTERNS = {
-    "ARP":        re.compile(r'\barp\b', re.IGNORECASE),
-    "DHCP":       re.compile(r'\bbootp|dhcp\b', re.IGNORECASE),
-    "mDNS":       re.compile(r'\bmdns\b|5353', re.IGNORECASE),
-    "SSDP/UPnP":  re.compile(r'\bssdp\b|239\.255\.255\.250', re.IGNORECASE),
-    "NetBIOS":    re.compile(r'\bnetbios\b|137|138', re.IGNORECASE),
-    "LLMNR":      re.compile(r'\bllmnr\b|5355', re.IGNORECASE),
-    "IGMP":       re.compile(r'\bigmp\b', re.IGNORECASE),
-    "OSPF":       re.compile(r'\bospf\b|224\.0\.0\.5|224\.0\.0\.6', re.IGNORECASE),
-    "HSRP":       re.compile(r'\bhsrp\b|224\.0\.0\.2', re.IGNORECASE),
-    "CDP/LLDP":   re.compile(r'\bcdp\b|\bldp\b|\bllpd\b', re.IGNORECASE),
-    "STP":        re.compile(r'\bstp\b|\brstp\b', re.IGNORECASE),
+    "ARP": re.compile(r'\barp\b', re.IGNORECASE),
+    "DHCP": re.compile(r'\bbootp|dhcp\b', re.IGNORECASE),
+    "mDNS": re.compile(r'\bmdns\b|5353', re.IGNORECASE),
+    "SSDP/UPnP": re.compile(r'\bssdp\b|239\.255\.255\.250', re.IGNORECASE),
+    "NetBIOS": re.compile(r'\bnetbios\b|137|138', re.IGNORECASE),
+    "LLMNR": re.compile(r'\bllmnr\b|5355', re.IGNORECASE),
+    "IGMP": re.compile(r'\bigmp\b', re.IGNORECASE),
+    "OSPF": re.compile(r'\bospf\b|224\.0\.0\.5|224\.0\.0\.6', re.IGNORECASE),
+    "HSRP": re.compile(r'\bhsrp\b|224\.0\.0\.2', re.IGNORECASE),
+    "CDP/LLDP": re.compile(r'\bcdp\b|\bldp\b|\bllpd\b', re.IGNORECASE),
+    "STP": re.compile(r'\bstp\b|\brstp\b', re.IGNORECASE),
 }
 
 # ─── ข้อมูลสถิติ ──────────────────────────────────────────────────────
+
+
 class BroadcastStats:
     def __init__(self):
         self.lock = threading.Lock()
@@ -74,28 +79,28 @@ class BroadcastStats:
 
     def reset(self):
         with self.lock:
-            self.total_packets    = 0
-            self.broadcast_pkts   = 0
-            self.multicast_pkts   = 0
-            self.source_counts    = collections.Counter()   # IP → จำนวน packets
-            self.protocol_counts  = collections.Counter()   # Protocol → จำนวน
-            self.source_pps       = collections.Counter()   # IP → pps (per window)
-            self.alerts           = []                       # รายการแจ้งเตือน
-            self.start_time       = time.time()
-            self.window_start     = time.time()
-            self.window_packets   = 0
-            self.window_src       = collections.Counter()
-            self.storm_active     = False
-            self.storm_start      = None
-            self.storm_peak_pps   = 0
+            self.total_packets = 0
+            self.broadcast_pkts = 0
+            self.multicast_pkts = 0
+            self.source_counts = collections.Counter()   # IP → จำนวน packets
+            self.protocol_counts = collections.Counter()   # Protocol → จำนวน
+            self.source_pps = collections.Counter()   # IP → pps (per window)
+            self.alerts = []                       # รายการแจ้งเตือน
+            self.start_time = time.time()
+            self.window_start = time.time()
+            self.window_packets = 0
+            self.window_src = collections.Counter()
+            self.storm_active = False
+            self.storm_start = None
+            self.storm_peak_pps = 0
 
     def add_packet(self, src_ip, pkt_type, protocol, raw_line):
         with self.lock:
-            self.total_packets   += 1
-            self.window_packets  += 1
+            self.total_packets += 1
+            self.window_packets += 1
             if src_ip:
                 self.source_counts[src_ip] += 1
-                self.window_src[src_ip]    += 1
+                self.window_src[src_ip] += 1
             if pkt_type == "broadcast":
                 self.broadcast_pkts += 1
             elif pkt_type == "multicast":
@@ -122,7 +127,7 @@ class BroadcastStats:
             if total_pps >= STORM_THRESHOLD:
                 if not self.storm_active:
                     self.storm_active = True
-                    self.storm_start  = datetime.now()
+                    self.storm_start = datetime.now()
                 self.storm_peak_pps = max(self.storm_peak_pps, total_pps)
             else:
                 if self.storm_active:
@@ -144,7 +149,7 @@ class BroadcastStats:
                     })
 
             # reset window
-            self.window_start   = now
+            self.window_start = now
             self.window_packets = 0
             self.window_src.clear()
 
@@ -153,16 +158,16 @@ class BroadcastStats:
     def snapshot(self):
         with self.lock:
             return {
-                "total":       self.total_packets,
-                "broadcast":   self.broadcast_pkts,
-                "multicast":   self.multicast_pkts,
-                "sources":     dict(self.source_counts.most_common(20)),
-                "source_pps":  dict(self.source_pps.most_common(10)),
-                "protocols":   dict(self.protocol_counts.most_common(10)),
-                "alerts":      list(self.alerts[-20:]),
-                "storm":       self.storm_active,
-                "elapsed":     time.time() - self.start_time,
-                "storm_peak":  self.storm_peak_pps,
+                "total": self.total_packets,
+                "broadcast": self.broadcast_pkts,
+                "multicast": self.multicast_pkts,
+                "sources": dict(self.source_counts.most_common(20)),
+                "source_pps": dict(self.source_pps.most_common(10)),
+                "protocols": dict(self.protocol_counts.most_common(10)),
+                "alerts": list(self.alerts[-20:]),
+                "storm": self.storm_active,
+                "elapsed": time.time() - self.start_time,
+                "storm_peak": self.storm_peak_pps,
             }
 
 
@@ -178,7 +183,7 @@ def parse_tcpdump_line(line):
     if not line or line.startswith('tcpdump') or line.startswith('listening'):
         return None, None, None
 
-    src_ip   = None
+    src_ip = None
     pkt_type = None
     protocol = None
 
@@ -312,7 +317,8 @@ def print_dashboard(snap, total_pps, interface):
     bcast_pct = (bcast / total * 100) if total > 0 else 0
     mcast_pct = (mcast / total * 100) if total > 0 else 0
 
-    pps_color = Colors.RED if total_pps >= STORM_THRESHOLD else (Colors.YELLOW if total_pps >= ALERT_THRESHOLD else Colors.GREEN)
+    pps_color = Colors.RED if total_pps >= STORM_THRESHOLD else (
+        Colors.YELLOW if total_pps >= ALERT_THRESHOLD else Colors.GREEN)
 
     print(f"""
 {Colors.BOLD}  ── Overall Traffic ──────────────────────────────────────────────────────{Colors.RESET}
@@ -333,9 +339,9 @@ def print_dashboard(snap, total_pps, interface):
 
     # Top Broadcast Talkers
     print(f"\n{Colors.BOLD}  ── Top Broadcast Sources (IP → Total / Current pps) ──────────────────{Colors.RESET}")
-    sources    = snap['sources']
+    sources = snap['sources']
     source_pps = snap['source_pps']
-    max_src    = max(sources.values()) if sources else 1
+    max_src = max(sources.values()) if sources else 1
 
     if not sources:
         print(f"  {Colors.DIM}  ยังไม่มีข้อมูล...{Colors.RESET}")
@@ -343,10 +349,11 @@ def print_dashboard(snap, total_pps, interface):
         print(f"  {Colors.BOLD}{'Rank':<5} {'Source IP':<18} {'Packets':>8}  {'Rate':>8}  {'Bar'}{Colors.RESET}")
         print(f"  {'─'*65}")
         for rank, (ip, cnt) in enumerate(sorted(sources.items(), key=lambda x: -x[1])[:15], 1):
-            pps_val    = source_pps.get(ip, 0)
-            bar        = format_bar(cnt, max_src, 20)
-            src_color  = Colors.RED if pps_val >= ALERT_THRESHOLD else (Colors.YELLOW if pps_val >= ALERT_THRESHOLD / 2 else Colors.GREEN)
-            pps_badge  = f"{Colors.RED}{Colors.BOLD}{pps_val:>5.1f} pps{Colors.RESET}" if pps_val >= ALERT_THRESHOLD else f"{Colors.DIM}{pps_val:>5.1f} pps{Colors.RESET}"
+            pps_val = source_pps.get(ip, 0)
+            bar = format_bar(cnt, max_src, 20)
+            src_color = Colors.RED if pps_val >= ALERT_THRESHOLD else (
+                Colors.YELLOW if pps_val >= ALERT_THRESHOLD / 2 else Colors.GREEN)
+            pps_badge = f"{Colors.RED}{Colors.BOLD}{pps_val:>5.1f} pps{Colors.RESET}" if pps_val >= ALERT_THRESHOLD else f"{Colors.DIM}{pps_val:>5.1f} pps{Colors.RESET}"
             print(f"  {Colors.DIM}{rank:>3}.{Colors.RESET}  {src_color}{ip:<18}{Colors.RESET}  {cnt:>8,}  {pps_badge}  {bar}")
 
     # Recent Alerts
@@ -401,13 +408,13 @@ def export_report(snap, interface, filename=None):
         "capture_time": datetime.now().isoformat(),
         "duration_seconds": round(snap['elapsed'], 1),
         "statistics": {
-            "total_packets":     snap['total'],
+            "total_packets": snap['total'],
             "broadcast_packets": snap['broadcast'],
             "multicast_packets": snap['multicast'],
         },
-        "top_sources":   snap['sources'],
-        "protocols":     snap['protocols'],
-        "alerts":        snap['alerts'],
+        "top_sources": snap['sources'],
+        "protocols": snap['protocols'],
+        "alerts": snap['alerts'],
         "storm_detected": snap['storm'],
         "storm_peak_pps": round(snap['storm_peak'], 1),
         "thresholds": {
@@ -490,10 +497,10 @@ def get_iface_ip_mac():
                     if not name_m:
                         continue
                     name = name_m.group(1).rstrip(':')
-                    ip_m  = re.search(r'inet\s+(\d{1,3}(?:\.\d{1,3}){3})', block)
+                    ip_m = re.search(r'inet\s+(\d{1,3}(?:\.\d{1,3}){3})', block)
                     mac_m = re.search(r'ether\s+([0-9a-f:]{17})', block, re.I)
                     iface_info[name] = {
-                        "ip":  ip_m.group(1)  if ip_m  else "-",
+                        "ip": ip_m.group(1) if ip_m else "-",
                         "mac": mac_m.group(1).upper() if mac_m else "-",
                     }
             else:  # linux
@@ -503,10 +510,10 @@ def get_iface_ip_mac():
                     if not name_m:
                         continue
                     name = name_m.group(1).split('@')[0]
-                    ip_m  = re.search(r'inet\s+(\d{1,3}(?:\.\d{1,3}){3})', block)
+                    ip_m = re.search(r'inet\s+(\d{1,3}(?:\.\d{1,3}){3})', block)
                     mac_m = re.search(r'link/ether\s+([0-9a-f:]{17})', block, re.I)
                     iface_info[name] = {
-                        "ip":  ip_m.group(1)  if ip_m  else "-",
+                        "ip": ip_m.group(1) if ip_m else "-",
                         "mac": mac_m.group(1).upper() if mac_m else "-",
                     }
     except Exception:
@@ -536,30 +543,30 @@ def list_interfaces():
                     print(f"  {Colors.DIM}{line}{Colors.RESET}")
                     continue
 
-                num   = m.group(1)
-                name  = m.group(2)
+                num = m.group(1)
+                name = m.group(2)
                 flags = m.group(3).strip()
 
-                info  = iface_info.get(name, {})
-                ip    = info.get("ip",  "-")
-                mac   = info.get("mac", "-")
+                info = iface_info.get(name, {})
+                ip = info.get("ip", "-")
+                mac = info.get("mac", "-")
 
                 # เลือกสีตาม status
                 if "Associated" in flags or "Connected" in flags:
                     status_color = Colors.GREEN
-                    name_color   = Colors.GREEN
+                    name_color = Colors.GREEN
                 elif "Up, Running" in flags and ip != "-":
                     status_color = Colors.CYAN
-                    name_color   = Colors.CYAN
+                    name_color = Colors.CYAN
                 elif "Disconnected" in flags or "none" in flags.lower():
                     status_color = Colors.DIM
-                    name_color   = Colors.DIM
+                    name_color = Colors.DIM
                 else:
                     status_color = Colors.YELLOW
-                    name_color   = Colors.YELLOW
+                    name_color = Colors.YELLOW
 
-                ip_display  = f"{Colors.GREEN}{ip:<18}{Colors.RESET}" if ip != "-" else f"{Colors.DIM}{'-':<18}{Colors.RESET}"
-                mac_display = f"{Colors.YELLOW}{mac}{Colors.RESET}"   if mac != "-" else f"{Colors.DIM}-{Colors.RESET}"
+                ip_display = f"{Colors.GREEN}{ip:<18}{Colors.RESET}" if ip != "-" else f"{Colors.DIM}{'-':<18}{Colors.RESET}"
+                mac_display = f"{Colors.YELLOW}{mac}{Colors.RESET}" if mac != "-" else f"{Colors.DIM}-{Colors.RESET}"
                 flags_short = flags[:38]
 
                 print(f"  {Colors.DIM}{num:>3}.{Colors.RESET} "
@@ -700,14 +707,16 @@ Examples:
     print(f"\n  {Colors.BOLD}Recommendations:{Colors.RESET}")
     recommendations = []
     if snap['storm']:
-        recommendations.append((Colors.RED, "CRITICAL: พบ Broadcast Storm! ตรวจสอบ STP Loop หรืออุปกรณ์ที่ผิดปกติทันที"))
+        recommendations.append(
+            (Colors.RED, "CRITICAL: พบ Broadcast Storm! ตรวจสอบ STP Loop หรืออุปกรณ์ที่ผิดปกติทันที"))
 
     sources = snap['sources']
     if sources:
         top_ip, top_cnt = max(sources.items(), key=lambda x: x[1])
         avg_per_src = snap['total'] / len(sources) if sources else 0
         if top_cnt > avg_per_src * 5:
-            recommendations.append((Colors.YELLOW, f"HIGH: {top_ip} ส่ง broadcast มากผิดปกติ ({top_cnt:,} pkts) — ตรวจสอบอุปกรณ์นี้"))
+            recommendations.append(
+                (Colors.YELLOW, f"HIGH: {top_ip} ส่ง broadcast มากผิดปกติ ({top_cnt:,} pkts) — ตรวจสอบอุปกรณ์นี้"))
 
     protos = snap['protocols']
     if protos.get('ARP', 0) > snap['total'] * 0.4:

@@ -18,16 +18,19 @@ import platform
 from datetime import datetime
 
 # ─── สี Terminal ────────────────────────────────────────────────────
+
+
 class Colors:
-    HEADER    = '\033[95m'
-    BLUE      = '\033[94m'
-    CYAN      = '\033[96m'
-    GREEN     = '\033[92m'
-    YELLOW    = '\033[93m'
-    RED       = '\033[91m'
-    BOLD      = '\033[1m'
-    DIM       = '\033[2m'
-    RESET     = '\033[0m'
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    DIM = '\033[2m'
+    RESET = '\033[0m'
+
 
 def run_powershell(command):
     """รันคำสั่ง PowerShell และคืนค่าผลลัพธ์แบบ string"""
@@ -37,6 +40,7 @@ def run_powershell(command):
         return result.stdout.strip()
     except Exception as e:
         return f"Error: {str(e)}"
+
 
 def check_smbv1():
     """ตรวจสอบการเปิดใช้งาน SMBv1 (โปรโตคอลเก่าที่มีช่องโหว่ร้ายแรง)"""
@@ -56,14 +60,16 @@ def check_smbv1():
         "recommendation": "ไม่ต้องดำเนินการใดๆ"
     }
 
+
 def check_firewall():
     """ตรวจสอบสถานะ Windows Firewall ทุก Profile"""
     ps_cmd = "Get-NetFirewallProfile | Select-Object Name, Enabled | ConvertTo-Json"
     output = run_powershell(ps_cmd)
-    
+
     if "Error" in output or not output:
-        return {"status": "UNKNOWN", "severity": "MEDIUM", "detail": "ไม่สามารถตรวจสอบ Firewall ได้", "recommendation": "ตรวจสอบสิทธิ์ Administrator"}
-    
+        return {"status": "UNKNOWN", "severity": "MEDIUM", "detail": "ไม่สามารถตรวจสอบ Firewall ได้",
+                "recommendation": "ตรวจสอบสิทธิ์ Administrator"}
+
     try:
         profiles = json.loads(output)
         disabled_profiles = []
@@ -89,7 +95,9 @@ def check_firewall():
             "recommendation": "ไม่ต้องดำเนินการใดๆ"
         }
     except Exception:
-        return {"status": "UNKNOWN", "severity": "MEDIUM", "detail": "รูปแบบข้อมูล Firewall ไม่ถูกต้อง", "recommendation": "ตรวจสอบด้วยตนเอง"}
+        return {"status": "UNKNOWN", "severity": "MEDIUM",
+                "detail": "รูปแบบข้อมูล Firewall ไม่ถูกต้อง", "recommendation": "ตรวจสอบด้วยตนเอง"}
+
 
 def check_uac():
     """ตรวจสอบการตั้งค่า User Account Control (UAC)"""
@@ -109,12 +117,13 @@ def check_uac():
         "recommendation": "ไม่ต้องดำเนินการใดๆ"
     }
 
+
 def check_rdp_nla():
     """ตรวจสอบการตั้งค่า Remote Desktop Network Level Authentication (NLA)"""
     ps_cmd_rdp = "(Get-ItemProperty 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server').fDenyTSConnections"
     output_rdp = run_powershell(ps_cmd_rdp)
-    
-    if "0" in output_rdp: # RDP เปิดอยู่
+
+    if "0" in output_rdp:  # RDP เปิดอยู่
         ps_cmd_nla = "(Get-ItemProperty 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp').UserAuthentication"
         output_nla = run_powershell(ps_cmd_nla)
         if "1" not in output_nla:
@@ -136,6 +145,7 @@ def check_rdp_nla():
         "detail": "RDP (Remote Desktop) ถูกปิดใช้งานอยู่",
         "recommendation": "ไม่ต้องดำเนินการใดๆ"
     }
+
 
 def check_defender():
     """ตรวจสอบสถานะ Windows Defender Real-time Protection"""
@@ -161,6 +171,7 @@ def check_defender():
         "detail": "ใช้อิสระกับ Third-party Antivirus หรือไม่สามารถดึงข้อมูลได้",
         "recommendation": "ตรวจสอบโปรแกรม Antivirus หลักในเครื่อง"
     }
+
 
 def main():
     print(f"""
@@ -191,7 +202,7 @@ def main():
     for name, func in checks:
         res = func()
         results.append({"check": name, "result": res})
-        
+
         status_color = Colors.GREEN if res["status"] == "PASS" else Colors.RED
         print(f"  {Colors.BOLD}{name}{Colors.RESET}")
         print(f"  Result : {status_color}[{res['status']}]{Colors.RESET} ({res['severity']})")
@@ -207,6 +218,7 @@ def main():
         json.dump(results, f, indent=2, ensure_ascii=False)
 
     print(f"\n{Colors.GREEN}  ✅ การตรวจสอบเสร็จสิ้น รายงานถูกบันทึกที่: {filename}{Colors.RESET}\n")
+
 
 if __name__ == "__main__":
     main()

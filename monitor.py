@@ -23,18 +23,19 @@ import subprocess
 import concurrent.futures
 from datetime import datetime
 
+
 class Colors:
-    CYAN    = '\033[96m'
-    GREEN   = '\033[92m'
-    YELLOW  = '\033[93m'
-    RED     = '\033[91m'
-    BOLD    = '\033[1m'
-    DIM     = '\033[2m'
-    RESET   = '\033[0m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    DIM = '\033[2m'
+    RESET = '\033[0m'
     MAGENTA = '\033[35m'
     BG_GREEN = '\033[42m'
-    BG_RED   = '\033[41m'
-    WHITE    = '\033[97m'
+    BG_RED = '\033[41m'
+    WHITE = '\033[97m'
 
 
 def clear_screen():
@@ -105,9 +106,12 @@ def detect_os_ttl(ip):
         match = re.search(r'ttl[=\s](\d+)', output, re.IGNORECASE)
         if match:
             ttl = int(match.group(1))
-            if ttl <= 64:   return "Linux/Unix"
-            elif ttl <= 128: return "Windows"
-            elif ttl <= 255: return "Network Device"
+            if ttl <= 64:
+                return "Linux/Unix"
+            elif ttl <= 128:
+                return "Windows"
+            elif ttl <= 255:
+                return "Network Device"
     except Exception:
         pass
     return "Unknown"
@@ -223,7 +227,8 @@ def run_monitor(subnet, interval=60, baseline_file="monitor_baseline.json"):
                     info['last_seen'] = datetime.now().isoformat()
                     info['first_seen'] = datetime.now().isoformat()
                     print_device_info(ip, info, "🔴 NEW", Colors.RED)
-                    event_log.append({"event": "NEW_DEVICE", "ip": ip, "info": info, "time": datetime.now().isoformat()})
+                    event_log.append({"event": "NEW_DEVICE", "ip": ip, "info": info,
+                                     "time": datetime.now().isoformat()})
                     baseline[ip] = info
                 save_baseline(baseline, baseline_file)
 
@@ -233,7 +238,8 @@ def run_monitor(subnet, interval=60, baseline_file="monitor_baseline.json"):
                 print(f"  {'─'*110}")
                 for ip, info in sorted(gone_devices.items()):
                     print_device_info(ip, info, "🟡 GONE", Colors.YELLOW)
-                    event_log.append({"event": "DEVICE_GONE", "ip": ip, "info": info, "time": datetime.now().isoformat()})
+                    event_log.append({"event": "DEVICE_GONE", "ip": ip, "info": info,
+                                     "time": datetime.now().isoformat()})
 
             if not new_devices and not gone_devices:
                 print(f"  {Colors.GREEN}  ✓ ไม่มีการเปลี่ยนแปลง — เครือข่ายปกติ{Colors.RESET}")
@@ -258,7 +264,8 @@ def run_monitor(subnet, interval=60, baseline_file="monitor_baseline.json"):
                 label = "NEW" if evt['event'] == 'NEW_DEVICE' else "GONE"
                 ip = evt['ip']
                 ts = evt['time'][:19]
-                print(f"  {evt_color}[{label}]{Colors.RESET} {Colors.GREEN}{ip}{Colors.RESET} — {Colors.DIM}{ts}{Colors.RESET}")
+                print(
+                    f"  {evt_color}[{label}]{Colors.RESET} {Colors.GREEN}{ip}{Colors.RESET} — {Colors.DIM}{ts}{Colors.RESET}")
 
             # Export
             export_choice = input(f"\n  {Colors.BOLD}บันทึก Event Log? [y/N]: {Colors.RESET}").strip().lower()

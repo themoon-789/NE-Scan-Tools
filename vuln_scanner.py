@@ -35,47 +35,52 @@ from datetime import datetime
 from collections import OrderedDict
 
 # ─── สี Terminal ────────────────────────────────────────────────────
+
+
 class Colors:
-    HEADER    = '\033[95m'
-    BLUE      = '\033[94m'
-    CYAN      = '\033[96m'
-    GREEN     = '\033[92m'
-    YELLOW    = '\033[93m'
-    RED       = '\033[91m'
-    BOLD      = '\033[1m'
-    DIM       = '\033[2m'
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    DIM = '\033[2m'
     UNDERLINE = '\033[4m'
-    RESET     = '\033[0m'
-    MAGENTA   = '\033[35m'
-    WHITE     = '\033[97m'
-    BG_RED    = '\033[41m'
+    RESET = '\033[0m'
+    MAGENTA = '\033[35m'
+    WHITE = '\033[97m'
+    BG_RED = '\033[41m'
     BG_YELLOW = '\033[43m'
-    BG_GREEN  = '\033[42m'
-    BG_BLUE   = '\033[44m'
-    BG_MAGENTA= '\033[45m'
+    BG_GREEN = '\033[42m'
+    BG_BLUE = '\033[44m'
+    BG_MAGENTA = '\033[45m'
 
 # ─── Severity Levels ───────────────────────────────────────────────
+
+
 class Severity:
     CRITICAL = "CRITICAL"
-    HIGH     = "HIGH"
-    MEDIUM   = "MEDIUM"
-    LOW      = "LOW"
-    INFO     = "INFO"
+    HIGH = "HIGH"
+    MEDIUM = "MEDIUM"
+    LOW = "LOW"
+    INFO = "INFO"
+
 
 SEVERITY_COLORS = {
     Severity.CRITICAL: f"{Colors.BG_RED}{Colors.WHITE}{Colors.BOLD}",
-    Severity.HIGH:     f"{Colors.RED}{Colors.BOLD}",
-    Severity.MEDIUM:   f"{Colors.YELLOW}{Colors.BOLD}",
-    Severity.LOW:      f"{Colors.BLUE}{Colors.BOLD}",
-    Severity.INFO:     f"{Colors.CYAN}",
+    Severity.HIGH: f"{Colors.RED}{Colors.BOLD}",
+    Severity.MEDIUM: f"{Colors.YELLOW}{Colors.BOLD}",
+    Severity.LOW: f"{Colors.BLUE}{Colors.BOLD}",
+    Severity.INFO: f"{Colors.CYAN}",
 }
 
 SEVERITY_EMOJI = {
     Severity.CRITICAL: "🔴",
-    Severity.HIGH:     "🟠",
-    Severity.MEDIUM:   "🟡",
-    Severity.LOW:      "🔵",
-    Severity.INFO:     "ℹ️ ",
+    Severity.HIGH: "🟠",
+    Severity.MEDIUM: "🟡",
+    Severity.LOW: "🔵",
+    Severity.INFO: "ℹ️ ",
 }
 
 # ─── Default Credentials Database ──────────────────────────────────
@@ -500,23 +505,23 @@ def check_open_ports(ip, findings):
 
     # ตรวจ port อันตราย
     dangerous_ports = {
-        23:    ("Telnet", "ข้อมูลส่งแบบ plaintext ไม่เข้ารหัส ควรใช้ SSH แทน"),
-        21:    ("FTP", "ข้อมูลส่งแบบ plaintext ควรใช้ SFTP แทน"),
-        25:    ("SMTP", "อาจถูกใช้ส่ง spam ถ้าเป็น open relay"),
-        135:   ("MSRPC", "เสี่ยงต่อ exploit เช่น EternalBlue"),
-        139:   ("NetBIOS", "เปิดเผยข้อมูลระบบ อาจถูก exploit"),
-        445:   ("SMB", "เสี่ยงต่อ WannaCry/EternalBlue ถ้าไม่อัพเดท"),
-        502:   ("Modbus", "Industrial protocol ไม่มี authentication"),
-        161:   ("SNMP", "อาจมี community string เป็น public/private"),
-        623:   ("IPMI", "เสี่ยงต่อ password hash disclosure"),
-        2375:  ("Docker", "Docker API ไม่มี authentication! RCE ได้ทันที"),
-        5555:  ("ADB", "Android Debug Bridge เปิดอยู่ RCE ได้"),
-        6379:  ("Redis", "มักไม่มี authentication เสี่ยง RCE"),
-        9200:  ("Elasticsearch", "มักไม่มี auth เข้าถึงข้อมูลได้"),
+        23: ("Telnet", "ข้อมูลส่งแบบ plaintext ไม่เข้ารหัส ควรใช้ SSH แทน"),
+        21: ("FTP", "ข้อมูลส่งแบบ plaintext ควรใช้ SFTP แทน"),
+        25: ("SMTP", "อาจถูกใช้ส่ง spam ถ้าเป็น open relay"),
+        135: ("MSRPC", "เสี่ยงต่อ exploit เช่น EternalBlue"),
+        139: ("NetBIOS", "เปิดเผยข้อมูลระบบ อาจถูก exploit"),
+        445: ("SMB", "เสี่ยงต่อ WannaCry/EternalBlue ถ้าไม่อัพเดท"),
+        502: ("Modbus", "Industrial protocol ไม่มี authentication"),
+        161: ("SNMP", "อาจมี community string เป็น public/private"),
+        623: ("IPMI", "เสี่ยงต่อ password hash disclosure"),
+        2375: ("Docker", "Docker API ไม่มี authentication! RCE ได้ทันที"),
+        5555: ("ADB", "Android Debug Bridge เปิดอยู่ RCE ได้"),
+        6379: ("Redis", "มักไม่มี authentication เสี่ยง RCE"),
+        9200: ("Elasticsearch", "มักไม่มี auth เข้าถึงข้อมูลได้"),
         11211: ("Memcached", "ไม่มี auth อาจใช้ DDoS amplification"),
         27017: ("MongoDB", "มักไม่มี auth เข้าถึง database ได้"),
-        4786:  ("Cisco Smart Install", "เสี่ยง RCE ถ้าเปิดอยู่"),
-        7547:  ("TR-069/CWMP", "เสี่ยงต่อ remote management exploit"),
+        4786: ("Cisco Smart Install", "เสี่ยง RCE ถ้าเปิดอยู่"),
+        7547: ("TR-069/CWMP", "เสี่ยงต่อ remote management exploit"),
         10250: ("Kubelet", "Kubernetes API อาจไม่มี auth"),
     }
 
@@ -547,7 +552,7 @@ def check_default_credentials(ip, open_ports, findings):
 
     # HTTP/HTTPS Basic Auth
     http_ports = [p for p in open_ports if p in [80, 81, 82, 83, 84, 85, 443, 8000, 8001, 8008,
-                                                   8080, 8081, 8088, 8443, 8554, 8888, 9000, 9090]]
+                                                 8080, 8081, 8088, 8443, 8554, 8888, 9000, 9090]]
 
     if http_ports:
         # ตรวจก่อนว่าเป็นอุปกรณ์อะไร
@@ -599,7 +604,7 @@ def check_default_credentials(ip, open_ports, findings):
                                 "recommendation": "เปลี่ยนรหัสผ่านทันที! ใช้รหัสที่ซับซ้อน >=8 ตัวอักษร ผสมตัวใหญ่ เล็ก ตัวเลข สัญลักษณ์",
                             })
                             print_severity(Severity.CRITICAL,
-                                f"Port {port} - login สำเร็จ: {Colors.RED}{Colors.BOLD}{username}:{disp_pass}{Colors.RESET} ({cred_type})")
+                                           f"Port {port} - login สำเร็จ: {Colors.RED}{Colors.BOLD}{username}:{disp_pass}{Colors.RESET} ({cred_type})")
                             break  # ไม่ต้องลองอีก
                 if found > 0:
                     break
@@ -641,7 +646,7 @@ def check_default_credentials(ip, open_ports, findings):
                         "recommendation": "เปลี่ยนรหัส RTSP ทันที! สามารถดู live video ได้",
                     })
                     print_severity(Severity.CRITICAL,
-                        f"RTSP - login สำเร็จ: {Colors.RED}{Colors.BOLD}{username}:{disp_pass}{Colors.RESET}")
+                                   f"RTSP - login สำเร็จ: {Colors.RED}{Colors.BOLD}{username}:{disp_pass}{Colors.RESET}")
                     break
             except Exception:
                 pass
@@ -948,7 +953,7 @@ def check_rtsp_vuln(ip, open_ports, findings):
                             "recommendation": "เปิดใช้ RTSP authentication ทันที!",
                         })
                         print_severity(Severity.CRITICAL,
-                            f"RTSP No Auth! ดู stream ได้: rtsp://{ip}:{port}{path}")
+                                       f"RTSP No Auth! ดู stream ได้: rtsp://{ip}:{port}{path}")
                         break
                     elif "401" in resp_t:
                         # ดี - ต้อง auth
@@ -1013,7 +1018,7 @@ def check_known_cves(ip, open_ports, findings):
                                     "recommendation": f"อัพเดท firmware ทันที! ดูรายละเอียดที่ https://nvd.nist.gov/vuln/detail/{cve['cve']}",
                                 })
                                 print_severity(cve["severity"],
-                                    f"{cve['cve']}: {cve['description']}")
+                                               f"{cve['cve']}: {cve['description']}")
                     except Exception:
                         pass
 
@@ -1030,7 +1035,7 @@ def check_known_cves(ip, open_ports, findings):
                             "recommendation": f"อัพเดทซอฟต์แวร์! ดูรายละเอียดที่ https://nvd.nist.gov/vuln/detail/{cve['cve']}",
                         })
                         print_severity(cve["severity"],
-                            f"{cve['cve']}: {cve['description']}")
+                                       f"{cve['cve']}: {cve['description']}")
 
     if not any(f["module"] == "Known CVE" for f in findings):
         print(f"  {Colors.GREEN}  ✓ ไม่พบ Known CVE ที่ตรงกัน (ควรอัพเดท firmware เป็นประจำ){Colors.RESET}")
@@ -1100,7 +1105,13 @@ def check_common_misconfig(ip, open_ports, findings):
                     body = resp.get("body", "")
                     # Filter false positives
                     if len(body) > 50 and "404" not in body.lower() and "not found" not in body.lower():
-                        sev = Severity.HIGH if any(kw in path for kw in [".env", ".git", "phpinfo", "server-status", "credentials"]) else Severity.MEDIUM
+                        sev = Severity.HIGH if any(
+                            kw in path for kw in [
+                                ".env",
+                                ".git",
+                                "phpinfo",
+                                "server-status",
+                                "credentials"]) else Severity.MEDIUM
                         findings.append({
                             "module": "Misconfiguration",
                             "severity": sev,

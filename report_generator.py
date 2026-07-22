@@ -187,9 +187,12 @@ def get_device_class(device_type):
 
 def get_os_class(os_str):
     os_lower = os_str.lower()
-    if 'windows' in os_lower:  return 'os-windows'
-    if 'linux' in os_lower:    return 'os-linux'
-    if 'network' in os_lower:  return 'os-network'
+    if 'windows' in os_lower:
+        return 'os-windows'
+    if 'linux' in os_lower:
+        return 'os-linux'
+    if 'network' in os_lower:
+        return 'os-network'
     return ''
 
 
@@ -219,7 +222,12 @@ def build_network_section(data):
         </tr>"""
 
     count = len(data)
-    camera_count = sum(1 for r in data if 'Camera' in r.get('device_type', '') or 'camera' in r.get('device_type', '').lower())
+    camera_count = sum(
+        1 for r in data if 'Camera' in r.get(
+            'device_type',
+            '') or 'camera' in r.get(
+            'device_type',
+            '').lower())
 
     summary = f"""<div class="summary-grid">
       <div class="card online"><div class="num">{count}</div><div class="label">Online Hosts</div></div>
@@ -350,10 +358,14 @@ def build_vuln_section(data):
     info = counts.get('INFO', 0)
 
     risk_score = crit * 40 + high * 20 + med * 10 + low * 5
-    if risk_score == 0:       risk_cls, risk_label = "risk-low",      "LOW RISK"
-    elif risk_score < 50:     risk_cls, risk_label = "risk-medium",   "MEDIUM RISK"
-    elif risk_score < 100:    risk_cls, risk_label = "risk-high",     "HIGH RISK"
-    else:                     risk_cls, risk_label = "risk-critical",  "CRITICAL RISK"
+    if risk_score == 0:
+        risk_cls, risk_label = "risk-low", "LOW RISK"
+    elif risk_score < 50:
+        risk_cls, risk_label = "risk-medium", "MEDIUM RISK"
+    elif risk_score < 100:
+        risk_cls, risk_label = "risk-high", "HIGH RISK"
+    else:
+        risk_cls, risk_label = "risk-critical", "CRITICAL RISK"
 
     summary = f"""<div class="summary-grid">
       <div class="card critical"><div class="num">{crit}</div><div class="label">Critical</div></div>
@@ -476,7 +488,7 @@ def main():
 \033[0m""")
 
     parser = argparse.ArgumentParser(description="HTML Report Generator สำหรับ NE Scan")
-    parser.add_argument('-i', '--input',  help='Input JSON file')
+    parser.add_argument('-i', '--input', help='Input JSON file')
     parser.add_argument('-o', '--output', help='Output HTML file')
     args = parser.parse_args()
 

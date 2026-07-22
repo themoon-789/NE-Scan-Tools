@@ -35,28 +35,31 @@ import urllib.error
 from datetime import datetime
 
 # ─── สี Terminal ────────────────────────────────────────────────────
+
+
 class Colors:
-    HEADER   = '\033[95m'
-    BLUE     = '\033[94m'
-    CYAN     = '\033[96m'
-    GREEN    = '\033[92m'
-    YELLOW   = '\033[93m'
-    RED      = '\033[91m'
-    BOLD     = '\033[1m'
-    DIM      = '\033[2m'
-    RESET    = '\033[0m'
-    BG_RED   = '\033[41m'
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    DIM = '\033[2m'
+    RESET = '\033[0m'
+    BG_RED = '\033[41m'
     BG_GREEN = '\033[42m'
-    WHITE    = '\033[97m'
+    WHITE = '\033[97m'
+
 
 # ── ตรวจสอบว่ามี script ครบหรือไม่ ───────────────────────────────
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REQUIRED_SCRIPTS = {
     "network_scanner.py": "Network Scanner (ค้นหาอุปกรณ์ในเครือข่าย)",
-    "port_scanner.py":    "Port Scanner (ตรวจ Port ที่เปิดอยู่)",
-    "vuln_scanner.py":    "Vulnerability Scanner (ตรวจช่องโหว่)",
-    "net_device_audit.py":"Network Device Audit (ตรวจ Router/Switch)",
-    "windows_audit.py":   "Windows Security Audit",
+    "port_scanner.py": "Port Scanner (ตรวจ Port ที่เปิดอยู่)",
+    "vuln_scanner.py": "Vulnerability Scanner (ตรวจช่องโหว่)",
+    "net_device_audit.py": "Network Device Audit (ตรวจ Router/Switch)",
+    "windows_audit.py": "Windows Security Audit",
 }
 
 
@@ -121,22 +124,23 @@ def show_main_menu():
     print(f"  {Colors.CYAN}┌──────────────────────────────────────────────────────────────────┐{Colors.RESET}")
 
     tools = [
-        ("1", "🌐 Network Scanner",     "network_scanner.py",  "ค้นหา IP/MAC/Vendor/OS ของอุปกรณ์ในเครือข่าย"),
-        ("2", "🔍 Port Scanner",        "port_scanner.py",     "สแกน Port ที่เปิดอยู่ + UDP + Service Detection"),
-        ("3", "🛡️  Vulnerability Scan", "vuln_scanner.py",     "ตรวจช่องโหว่ CVE/SNMP/Default Creds"),
-        ("4", "🌐 Network Device Audit","net_device_audit.py", "ตรวจ Router/Switch/Firewall Security"),
-        ("5", "🪟 Windows Audit",       "windows_audit.py",    "ตรวจ Windows Security Hardening"),
-        ("6", "⚡ Quick Full Scan",     None,                  "สแกน + ตรวจช่องโหว่ IP เดียวอัตโนมัติ"),
-        ("7", "📊 Subnet Full Scan",    None,                  "สแกนทุกอุปกรณ์ใน Subnet แล้วตรวจช่องโหว่"),
-        ("8", "🔭 Continuous Monitor",  "monitor.py",          "เฝ้าระวังเครือข่าย Real-time แจ้งเตือนอุปกรณ์ใหม่"),
-        ("9", "📊 HTML Report",         "report_generator.py", "สร้าง HTML Report จากไฟล์ JSON ผลสแกน"),
-        ("A", "📡 Broadcast Monitor",   "bcast_simple.py",     "ตรวจจับ Broadcast Storm/ARP Flood Real-time (sudo)"),
+        ("1", "🌐 Network Scanner", "network_scanner.py", "ค้นหา IP/MAC/Vendor/OS ของอุปกรณ์ในเครือข่าย"),
+        ("2", "🔍 Port Scanner", "port_scanner.py", "สแกน Port ที่เปิดอยู่ + UDP + Service Detection"),
+        ("3", "🛡️  Vulnerability Scan", "vuln_scanner.py", "ตรวจช่องโหว่ CVE/SNMP/Default Creds"),
+        ("4", "🌐 Network Device Audit", "net_device_audit.py", "ตรวจ Router/Switch/Firewall Security"),
+        ("5", "🪟 Windows Audit", "windows_audit.py", "ตรวจ Windows Security Hardening"),
+        ("6", "⚡ Quick Full Scan", None, "สแกน + ตรวจช่องโหว่ IP เดียวอัตโนมัติ"),
+        ("7", "📊 Subnet Full Scan", None, "สแกนทุกอุปกรณ์ใน Subnet แล้วตรวจช่องโหว่"),
+        ("8", "🔭 Continuous Monitor", "monitor.py", "เฝ้าระวังเครือข่าย Real-time แจ้งเตือนอุปกรณ์ใหม่"),
+        ("9", "📊 HTML Report", "report_generator.py", "สร้าง HTML Report จากไฟล์ JSON ผลสแกน"),
+        ("A", "📡 Broadcast Monitor", "bcast_simple.py", "ตรวจจับ Broadcast Storm/ARP Flood Real-time (sudo)"),
     ]
 
     for num, name, script, desc in tools:
         ok = "✓" if (script is None or os.path.exists(os.path.join(SCRIPT_DIR, script or ""))) else "✗"
         color = Colors.GREEN if ok == "✓" else Colors.RED
-        print(f"  {Colors.CYAN}│{Colors.RESET}  {Colors.BOLD}[{num}]{Colors.RESET} {name:<25} {Colors.DIM}{desc}{Colors.RESET}")
+        print(
+            f"  {Colors.CYAN}│{Colors.RESET}  {Colors.BOLD}[{num}]{Colors.RESET} {name:<25} {Colors.DIM}{desc}{Colors.RESET}")
 
     print(f"  {Colors.CYAN}│{Colors.RESET}")
     print(f"  {Colors.CYAN}│{Colors.RESET}  {Colors.BOLD}[0]{Colors.RESET} ❌ ออกจากโปรแกรม")
@@ -379,7 +383,8 @@ Modes (-m):
     # ─── Interactive Mode ──────────────────────────────────────────
     while True:
         show_main_menu()
-        choice = input(f"\n  {Colors.BOLD}เลือก [{Colors.CYAN}0-9 / A{Colors.RESET}{Colors.BOLD}]: {Colors.RESET}").strip().upper()
+        choice = input(
+            f"\n  {Colors.BOLD}เลือก [{Colors.CYAN}0-9 / A{Colors.RESET}{Colors.BOLD}]: {Colors.RESET}").strip().upper()
 
         if choice == '0':
             print(f"\n{Colors.CYAN}  👋 ขอบคุณที่ใช้งาน NE_Scan!{Colors.RESET}\n")
@@ -430,7 +435,6 @@ Modes (-m):
 
         else:
             print(f"  {Colors.RED}❌ ตัวเลือกไม่ถูกต้อง{Colors.RESET}")
-
 
         input(f"\n  {Colors.DIM}กด Enter เพื่อกลับเมนูหลัก...{Colors.RESET}")
         clear_screen()

@@ -21,16 +21,19 @@ import urllib.error
 from datetime import datetime
 
 # ─── สี Terminal ────────────────────────────────────────────────────
+
+
 class Colors:
-    HEADER    = '\033[95m'
-    BLUE      = '\033[94m'
-    CYAN      = '\033[96m'
-    GREEN     = '\033[92m'
-    YELLOW    = '\033[93m'
-    RED       = '\033[91m'
-    BOLD      = '\033[1m'
-    DIM       = '\033[2m'
-    RESET     = '\033[0m'
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    DIM = '\033[2m'
+    RESET = '\033[0m'
+
 
 def is_port_open(ip, port, timeout=2):
     """เช็คสถานะการเปิดของ Port"""
@@ -43,29 +46,30 @@ def is_port_open(ip, port, timeout=2):
     except Exception:
         return False
 
+
 def check_snmp_community(ip, community="public", timeout=2):
     """ทดสอบส่ง SNMP v1/v2c GetRequest แพ็กเกจพื้นฐานเพื่อเช็ค Default Community String"""
     # SNMP v1/v2c GetRequest packet for OID 1.3.6.1.2.1.1.1.0 (sysDescr)
     # Hex representation for UDP packet with community string
     comm_bytes = community.encode()
     comm_len = len(comm_bytes)
-    
+
     # Simple SNMP v2c GetRequest UDP Payload Template
     packet = bytearray([
-        0x30, 0x00, # Sequence header (length will be set)
-        0x02, 0x01, 0x01, # Version: v2c (1)
-        0x04, comm_len # Community string header
+        0x30, 0x00,  # Sequence header (length will be set)
+        0x02, 0x01, 0x01,  # Version: v2c (1)
+        0x04, comm_len  # Community string header
     ]) + comm_bytes + bytearray([
-        0xa0, 0x1b, # PDU Type: GetRequest
-        0x02, 0x04, 0x00, 0x00, 0x00, 0x01, # Request ID
-        0x02, 0x01, 0x00, # Error Status: 0
-        0x02, 0x01, 0x00, # Error Index: 0
-        0x30, 0x0e, # Varbind List
-        0x30, 0x0c, # Varbind
-        0x06, 0x08, 0x2b, 0x06, 0x01, 0x02, 0x01, 0x01, 0x01, 0x00, # OID 1.3.6.1.2.1.1.1.0
-        0x05, 0x00 # Value: Null
+        0xa0, 0x1b,  # PDU Type: GetRequest
+        0x02, 0x04, 0x00, 0x00, 0x00, 0x01,  # Request ID
+        0x02, 0x01, 0x00,  # Error Status: 0
+        0x02, 0x01, 0x00,  # Error Index: 0
+        0x30, 0x0e,  # Varbind List
+        0x30, 0x0c,  # Varbind
+        0x06, 0x08, 0x2b, 0x06, 0x01, 0x02, 0x01, 0x01, 0x01, 0x00,  # OID 1.3.6.1.2.1.1.1.0
+        0x05, 0x00  # Value: Null
     ])
-    
+
     # Fix packet length
     packet[1] = len(packet) - 2
 
@@ -78,6 +82,7 @@ def check_snmp_community(ip, community="public", timeout=2):
         return True if data else False
     except Exception:
         return False
+
 
 def audit_network_device(ip):
     print(f"\n{Colors.CYAN}{Colors.BOLD}🔍 เริ่มตรวจสอบอุปกรณ์ Network เป้าหมาย: {Colors.GREEN}{ip}{Colors.RESET}")
@@ -102,7 +107,8 @@ def audit_network_device(ip):
             print(f"   {color}• [{sev}] Port {port} ({name}) เปิดใช้งานอยู่{Colors.RESET}")
             print(f"     รายละเอียด: {desc}")
             print(f"     คำแนะนำ   : {rec}\n")
-            results.append({"type": "Management Port", "port": port, "service": name, "severity": sev, "issue": desc, "recommendation": rec})
+            results.append({"type": "Management Port", "port": port, "service": name,
+                           "severity": sev, "issue": desc, "recommendation": rec})
 
     # 2. SNMP Security Audit
     print(f"  {Colors.BOLD}[2] ตรวจสอบความปลอดภัยบริการ SNMP (Port 161 UDP){Colors.RESET}")
@@ -115,7 +121,10 @@ def audit_network_device(ip):
             print(f"   {Colors.RED}• [CRITICAL] พบ Default SNMP Community String: '{comm}'{Colors.RESET}")
             print(f"     รายละเอียด: ผู้โจมตีสามารถอ่านข้อมูลโครงสร้างเครือข่ายและระบบจาก SNMP ได้")
             print(f"     คำแนะนำ   : เปลี่ยน Community String เป็นคำที่ซับซ้อน หรืออัปเกรดไปใช้ SNMPv3 (มี Encryption + Auth)\n")
-            results.append({"type": "SNMP", "severity": "CRITICAL", "issue": f"Default Community String '{comm}' ใช้งานได้", "recommendation": "อัปเกรดเป็น SNMPv3 หรือเปลี่ยนชื่อ String"})
+            results.append({"type": "SNMP",
+                            "severity": "CRITICAL",
+                            "issue": f"Default Community String '{comm}' ใช้งานได้",
+                            "recommendation": "อัปเกรดเป็น SNMPv3 หรือเปลี่ยนชื่อ String"})
 
     if not snmp_found:
         print(f"   {Colors.GREEN}✓ ไม่พบ Default SNMP Community String ทั่วไป (หรือบริการถูกปิดอยู่){Colors.RESET}\n")
@@ -124,8 +133,9 @@ def audit_network_device(ip):
     print("=" * 65)
     print(f"{Colors.BOLD}📊 สรุปผลการตรวจสอบอุปกรณ์ Network ({ip}){Colors.RESET}")
     print(f"   พบประเด็นความเสี่ยงทั้งหมด: {len(results)} รายการ")
-    
+
     return results
+
 
 def main():
     parser = argparse.ArgumentParser(description="Network Device Security Audit Tool")
@@ -133,6 +143,7 @@ def main():
     args = parser.parse_args()
 
     audit_network_device(args.target)
+
 
 if __name__ == "__main__":
     main()
