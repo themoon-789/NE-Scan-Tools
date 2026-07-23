@@ -24,14 +24,9 @@ import subprocess
 import ipaddress
 import json
 import socket
-import time
 import concurrent.futures
 import re
 import platform
-import base64
-import ssl
-import urllib.request
-import urllib.error
 from datetime import datetime
 
 # ─── สี Terminal ────────────────────────────────────────────────────
@@ -97,15 +92,19 @@ def check_scripts():
     return missing
 
 
-def run_script(script_name, args_list=[]):
+def run_script(script_name, args_list=None):
     """รัน script อื่นใน process แยก"""
+    if args_list is None:
+        args_list = []
     script_path = os.path.join(SCRIPT_DIR, script_name)
     cmd = [sys.executable, script_path] + args_list
     subprocess.run(cmd)
 
 
-def run_sudo_script(script_name, args_list=[]):
+def run_sudo_script(script_name, args_list=None):
     """รัน script ด้วย sudo บน Unix/Mac หรือรันตรงๆ บน Windows (พร้อมแนะนำ Administrator)"""
+    if args_list is None:
+        args_list = []
     script_path = os.path.join(SCRIPT_DIR, script_name)
     if platform.system().lower() == "windows":
         cmd = [sys.executable, script_path] + args_list
@@ -145,7 +144,7 @@ def show_main_menu():
         ok = "✓" if (script is None or os.path.exists(os.path.join(SCRIPT_DIR, script or ""))) else "✗"
         color = Colors.GREEN if ok == "✓" else Colors.RED
         print(
-            f"  {Colors.CYAN}│{Colors.RESET}  {Colors.BOLD}[{num}]{Colors.RESET} {name:<25} {Colors.DIM}{desc}{Colors.RESET}")
+            f"  {Colors.CYAN}│{Colors.RESET}  {color}{ok}{Colors.RESET} {Colors.BOLD}[{num}]{Colors.RESET} {name:<25} {Colors.DIM}{desc}{Colors.RESET}")
 
     print(f"  {Colors.CYAN}│{Colors.RESET}")
     print(f"  {Colors.CYAN}│{Colors.RESET}  {Colors.BOLD}[0]{Colors.RESET} ❌ ออกจากโปรแกรม")
@@ -218,11 +217,9 @@ def get_mac(ip):
 
 def is_port_open(ip, port, timeout=1.5):
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(timeout)
-        res = s.connect_ex((ip, port))
-        s.close()
-        return res == 0
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(timeout)
+            return s.connect_ex((ip, port)) == 0
     except Exception:
         return False
 
