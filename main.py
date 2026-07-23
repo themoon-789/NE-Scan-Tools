@@ -373,6 +373,8 @@ Modes (-m):
                         choices=['net', 'port', 'vuln', 'net-dev', 'win', 'full'],
                         help='โหมดการสแกน (default: full)')
 
+    args = parser.parse_args()
+
     if platform.system().lower() == "windows":
         os.system("")  # Enable ANSI color codes on Windows CMD/PowerShell
 
