@@ -529,4 +529,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print(f"\n\n  \033[96m👋 ออกจากสคริปต์เรียบร้อย\033[0m\n")
+        sys.exit(0)

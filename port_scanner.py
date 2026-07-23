@@ -1241,4 +1241,8 @@ Port Presets:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print(f"\n\n{Colors.CYAN}  👋 ขอบคุณที่ใช้งาน Port Scanner!{Colors.RESET}\n")
+        sys.exit(0)

@@ -407,65 +407,74 @@ Modes (-m):
         return
 
     # ─── Interactive Mode ──────────────────────────────────────────
-    while True:
-        show_main_menu()
-        choice = input(
-            f"\n  {Colors.BOLD}เลือก [{Colors.CYAN}0-9 / A{Colors.RESET}{Colors.BOLD}]: {Colors.RESET}").strip().upper()
+    try:
+        while True:
+            show_main_menu()
+            choice = input(
+                f"\n  {Colors.BOLD}เลือก [{Colors.CYAN}0-9 / A{Colors.RESET}{Colors.BOLD}]: {Colors.RESET}").strip().upper()
 
-        if choice == '0':
-            print(f"\n{Colors.CYAN}  👋 ขอบคุณที่ใช้งาน NE_Scan!{Colors.RESET}\n")
-            break
+            if choice == '0':
+                print(f"\n{Colors.CYAN}  👋 ขอบคุณที่ใช้งาน NE_Scan!{Colors.RESET}\n")
+                break
 
-        elif choice == '1':
-            run_script("network_scanner.py")
+            elif choice == '1':
+                run_script("network_scanner.py")
 
-        elif choice == '2':
-            ip = input(f"  {Colors.BOLD}Target IP: {Colors.RESET}").strip()
-            if ip:
-                run_script("port_scanner.py", ["-t", ip])
+            elif choice == '2':
+                ip = input(f"  {Colors.BOLD}Target IP: {Colors.RESET}").strip()
+                if ip:
+                    run_script("port_scanner.py", ["-t", ip])
 
-        elif choice == '3':
-            ip = input(f"  {Colors.BOLD}Target IP: {Colors.RESET}").strip()
-            if ip:
-                run_script("vuln_scanner.py", ["-t", ip])
+            elif choice == '3':
+                ip = input(f"  {Colors.BOLD}Target IP: {Colors.RESET}").strip()
+                if ip:
+                    run_script("vuln_scanner.py", ["-t", ip])
 
-        elif choice == '4':
-            ip = input(f"  {Colors.BOLD}Target IP (Router/Switch): {Colors.RESET}").strip()
-            if ip:
-                run_script("net_device_audit.py", ["-t", ip])
+            elif choice == '4':
+                ip = input(f"  {Colors.BOLD}Target IP (Router/Switch): {Colors.RESET}").strip()
+                if ip:
+                    run_script("net_device_audit.py", ["-t", ip])
 
-        elif choice == '5':
-            run_script("windows_audit.py")
+            elif choice == '5':
+                run_script("windows_audit.py")
 
-        elif choice == '6':
-            ip = input(f"  {Colors.BOLD}Target IP: {Colors.RESET}").strip()
-            if ip:
-                quick_full_scan(ip)
+            elif choice == '6':
+                ip = input(f"  {Colors.BOLD}Target IP: {Colors.RESET}").strip()
+                if ip:
+                    quick_full_scan(ip)
 
-        elif choice == '7':
-            print(f"\n  {Colors.BOLD}ใส่ Subnet ที่ต้องการสแกน:{Colors.RESET}")
-            print(f"  {Colors.DIM}รูปแบบ: 192.168.1.0/24 หรือ 10.0.0.0/16{Colors.RESET}")
-            subnet = input(f"  {Colors.BOLD}Subnet: {Colors.RESET}").strip()
-            if subnet:
-                subnet_full_scan(subnet)
+            elif choice == '7':
+                print(f"\n  {Colors.BOLD}ใส่ Subnet ที่ต้องการสแกน:{Colors.RESET}")
+                print(f"  {Colors.DIM}รูปแบบ: 192.168.1.0/24 หรือ 10.0.0.0/16{Colors.RESET}")
+                subnet = input(f"  {Colors.BOLD}Subnet: {Colors.RESET}").strip()
+                if subnet:
+                    subnet_full_scan(subnet)
 
-        elif choice == '8':
-            run_script("monitor.py")
+            elif choice == '8':
+                run_script("monitor.py")
 
-        elif choice == '9':
-            run_script("report_generator.py")
+            elif choice == '9':
+                run_script("report_generator.py")
 
-        elif choice == 'A':
-            print(f"\n  {Colors.CYAN}📡 เปิด Broadcast Monitor (ต้องการ sudo)...{Colors.RESET}")
-            run_sudo_script("bcast_simple.py")
+            elif choice == 'A':
+                print(f"\n  {Colors.CYAN}📡 เปิด Broadcast Monitor (ต้องการ sudo)...{Colors.RESET}")
+                run_sudo_script("bcast_simple.py")
 
-        else:
-            print(f"  {Colors.RED}❌ ตัวเลือกไม่ถูกต้อง{Colors.RESET}")
+            else:
+                print(f"  {Colors.RED}❌ ตัวเลือกไม่ถูกต้อง{Colors.RESET}")
 
-        input(f"\n  {Colors.DIM}กด Enter เพื่อกลับเมนูหลัก...{Colors.RESET}")
-        clear_screen()
-        print_banner()
+            input(f"\n  {Colors.DIM}กด Enter เพื่อกลับเมนูหลัก...{Colors.RESET}")
+            clear_screen()
+            print_banner()
+
+    except (KeyboardInterrupt, EOFError):
+        print(f"\n\n{Colors.CYAN}  👋 ขอบคุณที่ใช้งาน NE_Scan!{Colors.RESET}\n")
+        sys.exit(0)
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print(f"\n\n  👋 ขอบคุณที่ใช้งาน NE_Scan!\n")
+        sys.exit(0)
