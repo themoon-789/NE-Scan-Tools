@@ -764,4 +764,8 @@ Examples:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print(f"\n\n  {Colors.CYAN}👋 ออกจาก Broadcast Monitor เรียบร้อย{Colors.RESET}\n")
+        sys.exit(0)

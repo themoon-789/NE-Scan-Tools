@@ -277,4 +277,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print(f"\n\n  {Colors.CYAN}👋 ออกจาก Windows Audit เรียบร้อย{Colors.RESET}\n")
+        sys.exit(0)

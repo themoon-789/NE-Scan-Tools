@@ -785,4 +785,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        stop_flag.set()
+        print(f"\n\n  {C['C']}👋 ออกจาก Broadcast Monitor เรียบร้อย{C['X']}\n")
+        sys.exit(0)
